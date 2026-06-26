@@ -1,0 +1,716 @@
+     1→- generic
+     2→  - link "Built with Arena Content is user-generated and unverified" [ref=e1]
+     3→  - button "Report content" [ref=e2]
+     4→  - button "Close banner" [ref=e3]
+     5→- Iframe [ref=e4]
+     6→  - link "Aller au contenu principal" [ref=e5]
+     7→  - banner
+     8→    - navigation "Navigation principale" [ref=e6]
+     9→      - link "ONG Centre Bemba Tagaçira — Accueil" [ref=e20]
+    10→      - tablist "Pages principales"
+    11→        - tab "Accueil" [ref=e57]
+    12→        - tab "Laboratoire" [ref=e58]
+    13→        - tab "Cueillettes" [ref=e59]
+    14→      - link "Faire un don à l'ONG" [ref=e21]
+    15→      - link "Devenir Sentinelle bénévole" [ref=e22]
+    16→      - link "Tableau de bord admin" [ref=e23]
+    17→      - button "Ouvrir le menu de navigation" [expanded=false, ref=e24]
+    18→      - dialog "Menu de navigation"
+    19→        - link "L'ONG → voir" [ref=e60]
+    20→        - link "Impact → voir" [ref=e61]
+    21→        - link "Essence CBET → voir" [ref=e62]
+    22→        - link "Missions → voir" [ref=e63]
+    23→        - link "Transparence → voir" [ref=e64]
+    24→        - link "Contact → voir" [ref=e65]
+    25→        - link "Faire un don à l'ONG" [ref=e66]
+    26→        - link "Devenir Sentinelle bénévole" [ref=e67]
+    27→        - link "Accéder au tableau de bord" [ref=e68]
+    28→  - main
+    29→    - region "Accueil ONG Centre Bemba Tagaçira" [ref=e7]
+    30→      - generic
+    31→        - StaticText "🇨🇮 ONG DE DROIT IVOIRIEN — ABIDJAN, CÔTE D'IVOIRE"
+    32→        - heading "Centre Bemba Tagaçira" [level=1, ref=e69]
+    33→          - StaticText "Centre Bemba"
+    34→          - StaticText "Tagaçira"
+    35→        - paragraph
+    36→          - StaticText "RECHERCHE BIOCHIMIQUE"
+    37→        - paragraph
+    38→          - StaticText "La science au service de la tradition,"
+    39→          - LineBreak "\n"
+    40→          - StaticText "la tradition pour la protection de la vie."
+    41→        - paragraph
+    42→          - StaticText "Organisation ivoirienne dédiée à la "
+    43→          - strong
+    44→          - StaticText " par la rigueur scientifique. Recherche biochimique, standardisation des préparations médicinales et transmission des savoirs ancestraux — depuis Abidjan, pour toute l'Afrique."
+    45→        - link "Découvrir l'ONG Centre Bemba Tagaçira" [ref=e70]
+    46→          - StaticText "Découvrir l'ONG"
+    47→        - link "Nous contacter" [ref=e71]
+    48→          - StaticText "📬 Nous Contacter"
+    49→        - link "Voir notre impact" [ref=e72]
+    50→          - StaticText "💚 Faire un Don"
+    51→        - link "Devenir Sentinelle bénévole" [ref=e73]
+    52→          - StaticText "🤝 Devenir Bénévole"
+    53→        - link "Notre Essence CBET" [ref=e74]
+    54→          - StaticText "🌿 Essence CBET"
+    55→        - paragraph
+    56→          - StaticText "3 200+"
+    57→        - paragraph
+    58→          - StaticText "Bénéficiaires"
+    59→        - paragraph
+    60→          - StaticText "5 ans"
+    61→        - paragraph
+    62→          - StaticText "D'activité"
+    63→        - paragraph
+    64→          - StaticText "98%"
+    65→        - paragraph
+    66→          - StaticText "Conformité"
+    67→      - paragraph
+    68→        - StaticText "Fondé par Tounkara Al Foussein — Expert en chimie alimentaire & contrôle qualité · Ethnobotaniste"
+    69→    - StaticText "QUI SOMMES-NOUS"
+    70→    - heading "L'ONG Centre Bemba Tagaçira" [level=2, ref=e25]
+    71→    - StaticText "✦"
+    72→    - generic
+    73→      - StaticText "\""
+    74→      - generic
+    75→        - paragraph
+    76→          - StaticText "Fort d'une expertise en chimie alimentaire et contrôle qualité, et héritier de savoirs ethnobotaniques ancestraux, j'ai fondé ce centre avec une vision novatrice : concilier la rigueur des protocoles de laboratoire avec la profondeur de la médecine traditionnelle africaine."
+    77→        - StaticText "🧑🏿🔬"
+    78→        - paragraph
+    79→          - StaticText "Tounkara Al Foussein"
+    80→        - paragraph
+    81→          - StaticText "Président – ONG Centre Bemba Tagaçira"
+    82→        - paragraph
+    83→          - StaticText "Abidjan, Côte d'Ivoire"
+    84→      - StaticText "\""
+    85→    - heading "NOTRE VISION" [level=3, ref=e26]
+    86→    - paragraph
+    87→      - StaticText "Nous sommes convaincus que la pharmacopée ivoirienne, lorsqu'elle est encadrée par une démarche scientifique rigoureuse, constitue un levier majeur pour la santé communautaire et le développement durable."
+    88→    - heading "NOTRE APPROCHE" [level=3, ref=e27]
+    89→    - paragraph
+    90→      - StaticText "Notre démarche repose sur le concept de symbiose bactérienne et holistique, visant à renforcer les systèmes de défense naturels de l'individu par des méthodes naturelles contrôlées et tracées."
+    91→    - paragraph
+    92→      - StaticText "7 Plantes"
+    93→    - paragraph
+    94→      - StaticText "Formule brevetée"
+    95→    - paragraph
+    96→      - StaticText "Abidjan"
+    97→    - paragraph
+    98→      - StaticText "Siège social"
+    99→    - paragraph
+   100→      - StaticText "ONG"
+   101→    - paragraph
+   102→      - StaticText "Droit ivoirien"
+   103→    - paragraph
+   104→      - StaticText "Sentinelles"
+   105→    - paragraph
+   106→      - StaticText "Réseau formé"
+   107→    - StaticText "🔬"
+   108→    - heading "Recherche & Développement" [level=4, ref=e28]
+   109→    - paragraph
+   110→      - StaticText "Étude biochimique et microbiologique des plantes médicinales, notamment le Scoparia dulcis (Timitimi), pour garantir leur efficacité et sécurité sanitaire."
+   111→    - StaticText "📊"
+   112→    - heading "Standardisation" [level=4, ref=e29]
+   113→    - paragraph
+   114→      - StaticText "Mise en place de normes de contrôle qualité strictes (pH, microbiote commensal, traçabilité) pour les préparations médicinales."
+   115→    - StaticText "🌱"
+   116→    - heading "Transmission" [level=4, ref=e30]
+   117→    - paragraph
+   118→      - StaticText "Formation d'une nouvelle génération de « Sentinelles » au respect des ressources naturelles et des protocoles d'hygiène."
+   119→    - StaticText "🤝"
+   120→    - heading "Collaboration" [level=4, ref=e31]
+   121→    - paragraph
+   122→      - StaticText "Ouverture à toute collaboration visant à intégrer nos solutions dans le paysage sanitaire national ivoirien."
+   123→    - region "Des Résultats Concrets" [ref=e8]
+   124→      - generic
+   125→        - StaticText "NOTRE IMPACT"
+   126→        - heading "Des Résultats Concrets" [level=2, ref=e75]
+   127→          - StaticText "Des Résultats Concrets"
+   128→        - paragraph
+   129→          - StaticText "Depuis 2019, le Centre Bemba Tagaçira œuvre à la valorisation scientifique de la pharmacopée africaine au bénéfice des communautés ivoiriennes."
+   130→        - region "Bénéficiaires: 3200+" [ref=e76]
+   131→          - image "Bénéficiaires"
+   132→          - generic
+   133→          - paragraph
+   134→          - paragraph
+   135→        - region "Projets réalisés: 47" [ref=e77]
+   136→          - image "Projets réalisés"
+   137→          - StaticText "0"
+   138→          - paragraph
+   139→          - paragraph
+   140→        - region "D'activité: 5 ans" [ref=e78]
+   141→          - image "D'activité"
+   142→          - generic
+   143→          - paragraph
+   144→          - paragraph
+   145→        - region "Sentinelles formées: 120+" [ref=e79]
+   146→          - image "Sentinelles formées"
+   147→          - generic
+   148→          - paragraph
+   149→          - paragraph
+   150→        - region "Espèces étudiées: 7" [ref=e80]
+   151→          - image "Espèces étudiées"
+   152→          - StaticText "0"
+   153→          - paragraph
+   154→          - paragraph
+   155→        - region "Taux de conformité: 98%" [ref=e81]
+   156→          - image "Taux de conformité"
+   157→          - generic
+   158→          - paragraph
+   159→          - paragraph
+   160→        - blockquote
+   161→          - paragraph
+   162→          - sectionfooter
+   163→        - link "Faire un don à l'ONG Centre Bemba Tagaçira" [ref=e82]
+   164→          - image "Don"
+   165→          - StaticText "Faire un Don"
+   166→          - StaticText "Soutenir nos recherches"
+   167→        - link "Devenir bénévole à l'ONG" [ref=e83]
+   168→          - image "Bénévole"
+   169→          - StaticText "Devenir Bénévole"
+   170→          - StaticText "Rejoindre les Sentinelles"
+   171→        - link "Nous contacter" [ref=e84]
+   172→          - image "Contact"
+   173→          - StaticText "Nous Contacter"
+   174→          - StaticText "Collaboration & partenariat"
+   175→    - generic
+   176→      - generic
+   177→      - generic
+   178→        - StaticText "PRODUIT PHARE"
+   179→        - heading "Essence de Blindage Symbiotique (CBET)" [level=2, ref=e85]
+   180→          - StaticText "Essence de Blindage"
+   181→          - StaticText "Symbiotique (CBET)"
+   182→        - paragraph
+   183→          - StaticText "Formule 7 Plantes · Protocole des 7 Nuits"
+   184→        - StaticText "✦"
+   185→        - generic
+   186→          - generic
+   187→        - StaticText "Flore vivante"
+   188→        - StaticText "Usage cutané"
+   189→        - StaticText "7 plantes"
+   190→        - StaticText "Contrôle pH"
+   191→        - StaticText "Traçable"
+   192→        - StaticText "Naturel"
+   193→        - heading "PROTOCOLE DES 7 NUITS" [level=3, ref=e86]
+   194→        - StaticText "🗝️"
+   195→        - StaticText "NUIT 1"
+   196→        - heading "L'Inoculation — La Clé Maîtresse" [level=4, ref=e134]
+   197→        - paragraph
+   198→          - StaticText "Le premier soir, ingérez une petite dose (environ 5 ml) de la préparation pure. Cela permet à votre système immunitaire et à votre flore intestinale de reconnaître la signature vibratoire du blindage."
+   199→        - StaticText "💧"
+   200→        - StaticText "NUITS 1–7"
+   201→        - heading "L'Onction — Le Bain Protecteur" [level=4, ref=e135]
+   202→        - StaticText "🔄"
+   203→        - StaticText "CYCLE COMPLET"
+   204→        - heading "La Continuité — Le Renforcement" [level=4, ref=e136]
+   205→        - heading "Précautions & Sécurité" [level=3, ref=e87]
+   206→        - StaticText "🔒"
+   207→        - heading "Intégrité du Scellé" [level=4, ref=e88]
+   208→        - paragraph
+   209→          - StaticText "Ne pas utiliser si le sceau de cire ou le bouchon est endommagé."
+   210→        - StaticText "❄️"
+   211→        - heading "Conservation" [level=4, ref=e89]
+   212→        - paragraph
+   213→          - StaticText "Conservez dans un endroit frais, à l'abri du soleil direct pour maintenir la stabilité des globules de défense."
+   214→        - StaticText "🧪"
+   215→        - heading "Test Cutané" [level=4, ref=e90]
+   216→        - paragraph
+   217→          - StaticText "En raison de la concentration en huiles essentielles (Timitim), faites un test sur le pli du coude 24h avant usage."
+   218→        - StaticText "⚠️"
+   219→        - heading "Contrôle Qualité" [level=4, ref=e91]
+   220→        - paragraph
+   221→          - StaticText "Si une odeur désagréable de putréfaction apparaît, cessez l'usage et rapportez le flacon au Centre pour analyse."
+   222→        - StaticText "ℹ️"
+   223→        - paragraph
+   224→          - StaticText "Note d'usage"
+   225→        - paragraph
+   226→          - StaticText "Une légère "
+   227→          - strong
+   228→          - StaticText ". Secouez avant usage. Hormis la dose d'inoculation initiale, le produit est destiné à un "
+   229→          - strong
+   230→          - StaticText ". En utilisant cette essence, vous entrez en résonance avec la lignée Bemba Tagaçira. Il est conseillé de maintenir une intention de clarté et de protection durant toute la durée du traitement."
+   231→    - StaticText "CE QUE NOUS FAISONS"
+   232→    - heading "Nos Missions" [level=2, ref=e32]
+   233→    - paragraph
+   234→      - StaticText "Six axes d'engagement pour valoriser la pharmacopée africaine et protéger les communautés."
+   235→    - StaticText "✦"
+   236→    - generic
+   237→      - StaticText "01"
+   238→      - StaticText "🧬"
+   239→      - heading "Étude Biochimique" [level=3, ref=e92]
+   240→      - paragraph
+   241→        - StaticText "SCOPARIA DULCIS (TIMITIMI)"
+   242→      - paragraph
+   243→        - StaticText "Analyse approfondie des propriétés biochimiques et microbiologiques des plantes médicinales africaines, avec un focus particulier sur le Scoparia dulcis (Timitimi), pour en garantir l'efficacité thérapeutique et la sécurité sanitaire."
+   244→      - StaticText "Microbiologie"
+   245→      - StaticText "Biochimie"
+   246→      - StaticText "Phytochimie"
+   247→    - generic
+   248→      - StaticText "02"
+   249→      - StaticText "📏"
+   250→      - heading "Contrôle Qualité" [level=3, ref=e93]
+   251→      - paragraph
+   252→        - StaticText "NORMES & TRAÇABILITÉ"
+   253→      - paragraph
+   254→        - StaticText "Mise en place de standards rigoureux incluant la mesure du pH, le contrôle du microbiote commensal et la traçabilité complète de chaque lot de préparation médicinale pour garantir la reproductibilité des résultats."
+   255→      - StaticText "pH"
+   256→      - StaticText "Microbiote"
+   257→      - StaticText "Traçabilité"
+   258→    - generic
+   259→      - StaticText "03"
+   260→      - StaticText "🧑🎓"
+   261→      - heading "Formation des Sentinelles" [level=3, ref=e94]
+   262→      - paragraph
+   263→        - StaticText "TRANSMISSION DU SAVOIR"
+   264→      - paragraph
+   265→        - StaticText "Programme de formation d'une nouvelle génération de Sentinelles engagées dans le respect des ressources naturelles, les protocoles d'hygiène stricts et la préservation des savoirs ethnobotaniques africains."
+   266→      - StaticText "Hygiène"
+   267→      - StaticText "Ethnobotanique"
+   268→      - StaticText "Protocoles"
+   269→    - generic
+   270→      - StaticText "04"
+   271→      - StaticText "🌍"
+   272→      - heading "Lutte contre la Biopiraterie" [level=3, ref=e95]
+   273→      - paragraph
+   274→        - StaticText "PROTECTION DU PATRIMOINE"
+   275→      - paragraph
+   276→        - StaticText "Opposition ferme à toute exploitation commerciale des savoirs ancestraux qui ne bénéficierait pas aux communautés dépositaires. Défense du patrimoine intellectuel et naturel des peuples africains."
+   277→      - StaticText "Droit"
+   278→      - StaticText "Communauté"
+   279→      - StaticText "Protection"
+   280→    - generic
+   281→      - StaticText "05"
+   282→      - StaticText "🤲"
+   283→      - heading "Santé Communautaire" [level=3, ref=e96]
+   284→      - paragraph
+   285→        - StaticText "DÉVELOPPEMENT DURABLE"
+   286→      - paragraph
+   287→        - StaticText "Intégration des solutions médicinales traditionnelles dans le paysage sanitaire national, avec une approche collaborative visant à améliorer la santé des communautés locales de manière durable et accessible."
+   288→      - StaticText "Santé publique"
+   289→      - StaticText "Accessibilité"
+   290→      - StaticText "Impact"
+   291→    - generic
+   292→      - StaticText "06"
+   293→      - StaticText "♻️"
+   294→      - heading "Préservation des Espèces" [level=3, ref=e97]
+   295→      - paragraph
+   296→        - StaticText "CUEILLETTE RESPONSABLE"
+   297→      - paragraph
+   298→        - StaticText "Engagement strict à ne jamais prélever plus que ce que la nature peut régénérer, avec des normes de cueillette raisonnée pour assurer la pérennité des espèces végétales utilisées dans nos préparations."
+   299→      - StaticText "Écologie"
+   300→      - StaticText "Régénération"
+   301→      - StaticText "Durabilité"
+   302→    - paragraph
+   303→      - StaticText "\"La plante n'est pas qu'une simple ressource biologique\""
+   304→    - paragraph
+   305→      - StaticText "Elle est une entité vivante porteuse d'une mémoire et d'une force. Notre mission est de servir de pont entre la rigueur du laboratoire et la profondeur de la tradition."
+   306→    - paragraph
+   307→      - StaticText "— CHARTE D'ÉTHIQUE DES SENTINELLES · CENTRE BEMBA TAGAÇIRA"
+   308→    - StaticText "NOS ENGAGEMENTS"
+   309→    - heading "Charte d'Éthique & de Qualité des Sentinelles" [level=2, ref=e33]
+   310→      - StaticText "Charte d'Éthique &"
+   311→      - StaticText "de Qualité des Sentinelles"
+   312→    - StaticText "✦"
+   313→    - paragraph
+   314→      - StaticText "PRÉAMBULE"
+   315→    - paragraph
+   316→      - StaticText "En tant que membre de l'ONG Centre Bemba Tagaçira, je reconnais que la plante n'est pas qu'une simple ressource biologique, mais une entité vivante porteuse d'une mémoire et d'une force. Ma mission est de servir de pont entre la rigueur du laboratoire et la profondeur de la tradition."
+   317→    - StaticText "I"
+   318→    - StaticText "🌿"
+   319→    - heading "Le Respect du Vivant" [level=3, ref=e34]
+   320→    - paragraph
+   321→      - StaticText "ENGAGEMENT ETHNOBOTANIQUE"
+   322→    - paragraph
+   323→      - StaticText "La Permission de Cueillette"
+   324→    - paragraph
+   325→      - StaticText "Je m'engage à ne jamais prélever une plante sans avoir respecté les normes établies par l'ONG Centre Bemba Tagaçira."
+   326→    - paragraph
+   327→      - StaticText "La Préservation"
+   328→    - paragraph
+   329→      - StaticText "Je ne prélèverai jamais plus que ce que la nature peut régénérer, veillant à la survie de l'espèce."
+   330→    - StaticText "II"
+   331→    - StaticText "🔬"
+   332→    - heading "La Rigueur du Contrôleur" [level=3, ref=e35]
+   333→    - paragraph
+   334→      - StaticText "ENGAGEMENT SCIENTIFIQUE"
+   335→    - paragraph
+   336→      - StaticText "L'Hygiène Irréprochable"
+   337→    - paragraph
+   338→      - StaticText "Je m'engage à respecter les protocoles de propreté lors de chaque manipulation, car « l'excès de propreté tue les mauvaises bactéries, mais la négligence tue l'efficacité du remède »."
+   339→    - paragraph
+   340→      - StaticText "La Conformité des Processus"
+   341→    - paragraph
+   342→      - StaticText "Je respecterai scrupuleusement les temps de macération (cycle de 7 jours) et les mesures de pH fixés par le Centre pour garantir la sélection de la flore commensale protectrice."
+   343→    - StaticText "III"
+   344→    - StaticText "🔐"
+   345→    - heading "Le Sceau du Secret" [level=3, ref=e36]
+   346→    - paragraph
+   347→      - StaticText "ENGAGEMENT DE CONFIDENTIALITÉ"
+   348→    - paragraph
+   349→      - StaticText "Protection du Savoir"
+   350→    - paragraph
+   351→      - StaticText "Je m'engage à ne pas divulguer à des tiers les formulations spécifiques, les dosages ou les méthodes de « verrouillage » sans l'accord écrit du Bureau Exécutif."
+   352→    - paragraph
+   353→      - StaticText "Lutte contre la Biopiraterie"
+   354→    - paragraph
+   355→      - StaticText "Je m'oppose à toute exploitation commerciale des savoirs du Centre qui ne bénéficierait pas aux communautés dépositaires de ces secrets."
+   356→    - StaticText "IV"
+   357→    - StaticText "⚖️"
+   358→    - heading "L'Intégrité de la Sentinelle" [level=3, ref=e37]
+   359→    - paragraph
+   360→      - StaticText "ENGAGEMENT PERSONNEL"
+   361→    - paragraph
+   362→      - StaticText "Vérité et Transparence"
+   363→    - paragraph
+   364→      - StaticText "En tant que contrôleur de ma propre pratique, je m'interdis de falsifier les résultats d'une préparation ou d'utiliser des plantes de qualité douteuse."
+   365→    - paragraph
+   366→      - StaticText "Service à la Vie"
+   367→    - paragraph
+   368→      - StaticText "Mon action vise uniquement le renforcement des globules de défense et le bien-être holistique de l'individu."
+   369→    - region "Rapports d'Activités" [ref=e9]
+   370→      - StaticText "TRANSPARENCE & GOUVERNANCE"
+   371→      - heading "Rapports d'Activités" [level=2, ref=e38]
+   372→        - StaticText "Rapports d'Activités"
+   373→      - paragraph
+   374→        - StaticText "Dans un souci de transparence totale, l'ONG Centre Bemba Tagaçira publie l'ensemble de ses rapports d'activités, financiers et scientifiques, librement accessibles."
+   375→      - image "Audit Indépendant"
+   376→        - StaticText "🔍"
+   377→      - paragraph
+   378→        - StaticText "Audit Indépendant"
+   379→      - paragraph
+   380→        - StaticText "Contrôle financier annuel"
+   381→      - image "Publication Publique"
+   382→        - StaticText "📢"
+   383→      - paragraph
+   384→        - StaticText "Publication Publique"
+   385→      - paragraph
+   386→        - StaticText "Tous les rapports accessibles"
+   387→      - image "Traçabilité des Dons"
+   388→        - StaticText "💳"
+   389→      - paragraph
+   390→        - StaticText "Traçabilité des Dons"
+   391→      - paragraph
+   392→        - StaticText "100% des fonds tracés"
+   393→      - image "Gouvernance Éthique"
+   394→        - StaticText "🏛️"
+   395→      - paragraph
+   396→        - StaticText "Gouvernance Éthique"
+   397→      - paragraph
+   398→        - StaticText "Bureau exécutif élu"
+   399→      - tablist "Filtrer par type de rapport"
+   400→        - tab "Tous" [selected, ref=e98]
+   401→        - tab "Rapport annuel" [ref=e99]
+   402→        - tab "Rapport financier" [ref=e100]
+   403→        - tab "Étude scientifique" [ref=e101]
+   404→      - article "Rapport : Rapport Annuel 2023" [ref=e39]
+   405→        - image "Rapport annuel"
+   406→          - StaticText "📊"
+   407→        - heading "Rapport Annuel 2023" [level=3, ref=e102]
+   408→        - StaticText "Rapport annuel"
+   409→        - StaticText "48"
+   410→        - StaticText " pages"
+   411→        - StaticText "2.4 Mo"
+   412→        - paragraph
+   413→          - StaticText "Bilan complet des activités de recherche, terrain et formation. Résultats des analyses biochimiques et impact communautaire."
+   414→        - StaticText "RA-2023"
+   415→        - button "Télécharger Rapport Annuel 2023" [ref=e103]
+   416→          - StaticText "⬇"
+   417→          - StaticText "Télécharger"
+   418→      - article "Rapport : Rapport Financier 2023" [ref=e40]
+   419→        - image "Rapport financier"
+   420→          - StaticText "💰"
+   421→        - heading "Rapport Financier 2023" [level=3, ref=e104]
+   422→        - StaticText "Rapport financier"
+   423→        - StaticText "24"
+   424→        - StaticText " pages"
+   425→        - StaticText "1.1 Mo"
+   426→        - paragraph
+   427→          - StaticText "Utilisation transparente des fonds reçus. Répartition budgétaire, dépenses par programme et perspectives financières."
+   428→        - StaticText "RF-2023"
+   429→        - button "Télécharger Rapport Financier 2023" [ref=e105]
+   430→          - StaticText "⬇"
+   431→          - StaticText "Télécharger"
+   432→      - article "Rapport : Étude Scoparia dulcis" [ref=e41]
+   433→        - image "Étude scientifique"
+   434→          - StaticText "🔬"
+   435→        - heading "Étude Scoparia dulcis" [level=3, ref=e106]
+   436→        - StaticText "Étude scientifique"
+   437→        - StaticText "72"
+   438→        - StaticText " pages"
+   439→        - StaticText "3.8 Mo"
+   440→        - paragraph
+   441→          - StaticText "Analyse biochimique complète du Timitimi (Scoparia dulcis). Propriétés antimicrobiennes, pH optimal de macération et flore commensale."
+   442→        - StaticText "ES-2023"
+   443→        - button "Télécharger Étude Scoparia dulcis" [ref=e107]
+   444→          - StaticText "⬇"
+   445→          - StaticText "Télécharger"
+   446→      - article "Rapport : Rapport Annuel 2022" [ref=e42]
+   447→        - image "Rapport annuel"
+   448→          - StaticText "📋"
+   449→        - heading "Rapport Annuel 2022" [level=3, ref=e108]
+   450→        - StaticText "Rapport annuel"
+   451→        - StaticText "44"
+   452→        - StaticText " pages"
+   453→        - StaticText "2.1 Mo"
+   454→        - paragraph
+   455→          - StaticText "Première édition du rapport annuel. Lancement des programmes de terrain, résultats préliminaires et structuration de l'ONG."
+   456→        - StaticText "RA-2022"
+   457→        - button "Télécharger Rapport Annuel 2022" [ref=e109]
+   458→          - StaticText "⬇"
+   459→          - StaticText "Télécharger"
+   460→      - article "Rapport : Rapport Financier 2022" [ref=e43]
+   461→        - image "Rapport financier"
+   462→          - StaticText "📑"
+   463→        - heading "Rapport Financier 2022" [level=3, ref=e110]
+   464→        - StaticText "Rapport financier"
+   465→        - StaticText "20"
+   466→        - StaticText " pages"
+   467→        - StaticText "0.9 Mo"
+   468→        - paragraph
+   469→          - StaticText "Premier exercice financier complet. Mise en place des structures de gouvernance et de contrôle financier."
+   470→        - StaticText "RF-2022"
+   471→        - button "Télécharger Rapport Financier 2022" [ref=e111]
+   472→          - StaticText "⬇"
+   473→          - StaticText "Télécharger"
+   474→      - article "Rapport : Rapport Annuel 2024" [ref=e44]
+   475→        - image "Rapport annuel"
+   476→          - StaticText "⏳"
+   477→        - heading "Rapport Annuel 2024" [level=3, ref=e112]
+   478→        - StaticText "À venir"
+   479→        - StaticText "Rapport annuel"
+   480→        - paragraph
+   481→          - StaticText "En cours de finalisation. Publication prévue en mars 2025."
+   482→        - StaticText "RA-2024"
+   483→      - heading "Utilisation des Fonds 2023" [level=3, ref=e45]
+   484→      - StaticText "Recherche & Laboratoire"
+   485→      - StaticText "42"
+   486→      - StaticText "%"
+   487→      - progressbar "Recherche & Laboratoire: 42%": 42
+   488→      - StaticText "Formation des Sentinelles"
+   489→      - StaticText "28"
+   490→      - StaticText "%"
+   491→      - progressbar "Formation des Sentinelles: 28%": 28
+   492→      - StaticText "Terrain & Cueillettes"
+   493→      - StaticText "20"
+   494→      - StaticText "%"
+   495→      - progressbar "Terrain & Cueillettes: 20%": 20
+   496→      - StaticText "Administration"
+   497→      - StaticText "10"
+   498→      - StaticText "%"
+   499→      - progressbar "Administration: 10%": 10
+   500→      - paragraph
+   501→        - StaticText "* Données issues du rapport financier 2023 audité de manière indépendante."
+   502→      - heading "Notre Engagement" [level=3, ref=e46]
+   503→      - list
+   504→        - listitem [level=1]
+   505→          - StaticText "✓"
+   506→          - StaticText "Aucun frais administratif > 15%"
+   507→        - listitem [level=1]
+   508→          - StaticText "✓"
+   509→          - StaticText "Audit financier annuel indépendant"
+   510→        - listitem [level=1]
+   511→          - StaticText "✓"
+   512→          - StaticText "Comptes publiés dans les 3 mois"
+   513→        - listitem [level=1]
+   514→          - StaticText "✓"
+   515→          - StaticText "Traçabilité de chaque don reçu"
+   516→        - listitem [level=1]
+   517→          - StaticText "✓"
+   518→          - StaticText "Gouvernance collégiale & éthique"
+   519→      - image "Cœur"
+   520→        - StaticText "💚"
+   521→      - heading "Soutenir l'ONG" [level=3, ref=e47]
+   522→      - paragraph
+   523→        - StaticText "Chaque contribution aide à financer nos recherches et à former de nouvelles Sentinelles."
+   524→      - link "Faire un don à l'ONG" [ref=e48]
+   525→        - StaticText "💚 Faire un Don"
+   526→      - link "Devenir bénévole" [ref=e49]
+   527→        - StaticText "🤝 Devenir Bénévole"
+   528→    - StaticText "REJOINDRE LE MOUVEMENT"
+   529→    - heading "Devenir Sentinelle" [level=2, ref=e50]
+   530→    - paragraph
+   531→      - StaticText "Rejoignez le réseau des Sentinelles de l'ONG Centre Bemba Tagaçira et engagez-vous dans la valorisation de la pharmacopée africaine."
+   532→    - StaticText "✦"
+   533→    - form
+   534→      - LabelText
+   535→        - StaticText "NOM *"
+   536→      - textbox "Votre nom de famille" [ref=e113]
+   537→      - LabelText
+   538→        - StaticText "PRÉNOM *"
+   539→      - textbox "Votre prénom" [ref=e114]
+   540→      - LabelText
+   541→        - StaticText "EMAIL *"
+   542→      - textbox "votre@email.com" [ref=e115]
+   543→      - LabelText
+   544→        - StaticText "TÉLÉPHONE"
+   545→      - textbox "+225 07 XX XX XX XX" [ref=e116]
+   546→      - LabelText
+   547→        - StaticText "VILLE *"
+   548→      - textbox "Votre ville" [ref=e117]
+   549→      - LabelText
+   550→        - StaticText "PAYS *"
+   551→      - combobox [expanded=false, ref=e118]: Sélectionner un pays
+   552→        - MenuListPopup
+   553→          - option "Sélectionner un pays" [selected, ref=e150]
+   554→          - option "Côte d'Ivoire" [ref=e151]
+   555→          - option "Sénégal" [ref=e152]
+   556→          - option "Mali" [ref=e153]
+   557→          - option "Guinée" [ref=e154]
+   558→          - option "Burkina Faso" [ref=e155]
+   559→          - option "Ghana" [ref=e156]
+   560→          - option "Nigeria" [ref=e157]
+   561→          - option "Cameroun" [ref=e158]
+   562→          - option "RD Congo" [ref=e159]
+   563→          - option "Togo" [ref=e160]
+   564→          - option "Bénin" [ref=e161]
+   565→          - option "France" [ref=e162]
+   566→          - option "Belgique" [ref=e163]
+   567→          - option "Canada" [ref=e164]
+   568→          - option "Autre" [ref=e165]
+   569→      - LabelText
+   570→        - StaticText "MOTIVATION & PARCOURS *"
+   571→      - textbox "Décrivez votre motivation à rejoindre le Centre Bemba Tagaçira, votre parcours et vos compétences (min. 30 caractères)..." [ref=e119]
+   572→      - LabelText
+   573→        - checkbox "Je soussigné(e) ... ..., accepte les termes de la Charte d'Éthique et de Qualité et m'engage, par mon honneur et ma conscience, à agir en Sentinelle dévouée de l'ONG Centre Bemba Tagaçira. *" [checked=false, ref=e137]
+   574→        - StaticText "Je soussigné(e) "
+   575→        - strong
+   576→          - StaticText "... ..."
+   577→        - StaticText ", accepte les termes de la"
+   578→        - StaticText " "
+   579→        - link "Charte d'Éthique et de Qualité" [ref=e138]
+   580→        - StaticText " "
+   581→        - StaticText "et m'engage, par mon honneur et ma conscience, à agir en Sentinelle dévouée de l'ONG Centre Bemba Tagaçira. *"
+   582→      - button "SOUMETTRE MA CANDIDATURE SENTINELLE" [ref=e120]
+   583→      - paragraph
+   584→        - StaticText "* Champs obligatoires. Vos données sont traitées dans le strict respect de la vie privée."
+   585→    - region "Prendre Contact" [ref=e10]
+   586→      - StaticText "NOUS ÉCRIRE"
+   587→      - heading "Prendre Contact" [level=2, ref=e51]
+   588→      - paragraph
+   589→        - StaticText "Une question, un projet de collaboration, une demande d'information ? Notre équipe vous répond sous 48h ouvrables."
+   590→      - complementary "Informations de contact"
+   591→        - image "Siège Social"
+   592→          - StaticText "📍"
+   593→        - heading "Siège Social" [level=3, ref=e121]
+   594→        - paragraph
+   595→          - StaticText "Abidjan, Côte d'Ivoire"
+   596→        - paragraph
+   597→          - StaticText "ONG de droit ivoirien"
+   598→        - image "Président Fondateur"
+   599→          - StaticText "👤"
+   600→        - heading "Président Fondateur" [level=3, ref=e122]
+   601→        - paragraph
+   602→          - StaticText "Tounkara Al Foussein"
+   603→        - paragraph
+   604→          - StaticText "Expert chimie alimentaire & Ethnobotaniste"
+   605→        - image "Délai de Réponse"
+   606→          - StaticText "🕐"
+   607→        - heading "Délai de Réponse" [level=3, ref=e123]
+   608→        - paragraph
+   609→          - StaticText "Sous 48h ouvrables"
+   610→        - paragraph
+   611→          - StaticText "Du lundi au vendredi"
+   612→        - image "Collaboration"
+   613→          - StaticText "🤝"
+   614→        - heading "Collaboration" [level=3, ref=e124]
+   615→        - paragraph
+   616→          - StaticText "Institutions, chercheurs, ONG"
+   617→        - paragraph
+   618→          - StaticText "Partenariats ouverts"
+   619→        - link "Faire un don" [ref=e125]
+   620→          - StaticText "💚 Faire un Don"
+   621→        - link "Devenir Sentinelle bénévole" [ref=e126]
+   622→          - StaticText "🤝 Devenir Bénévole"
+   623→        - blockquote
+   624→          - paragraph
+   625→          - sectionfooter
+   626→      - form "Formulaire de contact"
+   627→        - LabelText
+   628→          - StaticText "NOM COMPLET "
+   629→          - StaticText "*"
+   630→        - textbox "NOM COMPLET obligatoire" [required, ref=e127]
+   631→        - LabelText
+   632→          - StaticText "EMAIL "
+   633→          - StaticText "*"
+   634→        - textbox "EMAIL obligatoire" [required, ref=e128]
+   635→        - LabelText
+   636→          - StaticText "TÉLÉPHONE (OPTIONNEL)"
+   637→        - textbox "TÉLÉPHONE (OPTIONNEL)" [ref=e129]
+   638→        - LabelText
+   639→          - StaticText "ORGANISATION (OPTIONNEL)"
+   640→        - textbox "ORGANISATION (OPTIONNEL)" [ref=e130]
+   641→        - LabelText
+   642→          - StaticText "OBJET "
+   643→          - StaticText "*"
+   644→        - combobox "OBJET obligatoire" [expanded=false, ref=e131]: Sélectionner un objet...
+   645→          - MenuListPopup
+   646→            - option "Sélectionner un objet..." [selected, ref=e166]
+   647→            - option "Demande d'information générale" [ref=e167]
+   648→            - option "Collaboration institutionnelle" [ref=e168]
+   649→            - option "Don & Soutien financier" [ref=e169]
+   650→            - option "Bénévolat & Adhésion Sentinelle" [ref=e170]
+   651→            - option "Commande — Essence CBET" [ref=e171]
+   652→            - option "Présentation technique & Charte de Qualité" [ref=e172]
+   653→            - option "Presse & Communication" [ref=e173]
+   654→            - option "Autre" [ref=e174]
+   655→        - LabelText
+   656→        - textbox "MESSAGE obligatoire" [required, ref=e132]
+   657→        - paragraph
+   658→        - paragraph
+   659→        - LabelText
+   660→          - checkbox "J'accepte que mes données soient utilisées pour traiter ma demande conformément à la politique de confidentialité de l'ONG Centre Bemba Tagaçira. obligatoire" [checked=false, ref=e139]
+   661→        - button "ENVOYER LE MESSAGE" [ref=e133]
+   662→  - contentinfo "Pied de page — ONG Centre Bemba Tagaçira"
+   663→    - heading "Rejoignez la Mission" [level=2, ref=e11]
+   664→    - paragraph
+   665→      - StaticText "Soutenez la valorisation de la pharmacopée africaine."
+   666→    - link "Faire un don à l'ONG Centre Bemba Tagaçira" [ref=e12]
+   667→      - StaticText "💚 Faire un Don"
+   668→    - link "Devenir Sentinelle bénévole" [ref=e13]
+   669→      - StaticText "🤝 Devenir Bénévole"
+   670→    - link "Nous contacter" [ref=e14]
+   671→      - StaticText "📬 Nous Contacter"
+   672→    - paragraph
+   673→      - StaticText "Centre Bemba Tagaçira"
+   674→    - paragraph
+   675→      - StaticText "ONG · Abidjan, Côte d'Ivoire"
+   676→    - paragraph
+   677→      - StaticText "Organisation de droit ivoirien dédiée à la valorisation de la pharmacopée africaine par la rigueur scientifique et la transmission des savoirs ancestraux."
+   678→    - paragraph
+   679→      - StaticText "\"La science au service de la tradition, la tradition pour la protection de la vie.\""
+   680→    - paragraph
+   681→      - StaticText "SUIVEZ-NOUS"
+   682→    - list "Réseaux sociaux"
+   683→      - listitem "Facebook — ONG Centre Bemba Tagaçira" [level=1, ref=e52]
+   684→      - listitem "WhatsApp — ONG Centre Bemba Tagaçira" [level=1, ref=e53]
+   685→      - listitem "LinkedIn — ONG Centre Bemba Tagaçira" [level=1, ref=e54]
+   686→      - listitem "YouTube — ONG Centre Bemba Tagaçira" [level=1, ref=e55]
+   687→    - StaticText "ISO 22000"
+   688→    - StaticText "WHO-AFRO BPF"
+   689→    - StaticText "COFRAC"
+   690→    - navigation "Liens du pied de page — Site" [ref=e15]
+   691→      - heading "NAVIGATION" [level=3, ref=e56]
+   692→      - list
+   693→        - listitem [level=1]
+   694→          - link "Accueil" [ref=e140]
+   695→        - listitem [level=1]
+   696→          - link "L'ONG" [ref=e141]
+   697→        - listitem [level=1]
+   698→          - link "Impact" [ref=e142]
+   699→        - listitem [level=1]
+   700→          - link "Essence CBET" [ref=e143]
+   701→        - listitem [level=1]
+   702→          - link "Nos Missions" [ref=e144]
+   703→        - listitem [level=1]
+   704→          - link "Charte Éthique" [ref=e145]
+   705→        - listitem [level=1]
+   706→          - link "Transparence" [ref=e146]
+   707→        - listitem [level=1]
+   708→          - link "Contact" [ref=e147]
+   709→        - listitem [level=1]
+   710→          - link "Laboratoire" [ref=e148]
+   711→        - listitem [level=1]
+   712→          - link "Cueillettes" [ref=e149]
+   713→    - heading "INFORMATIONS" [level=3, ref=e16]
+   714→    - link "🔬 Accès Laboratoire" [ref=e17]
+   715→    - link "🌿 Suivi Cueillettes" [ref=e18]
+   716→    - link "📊 Rapports d'activités" [ref=e19]
