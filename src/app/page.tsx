@@ -8,7 +8,6 @@ import {
   Shield,
   Users,
   ChevronRight,
-  Phone,
   Mail,
   MapPin,
   Clock,
@@ -17,24 +16,20 @@ import {
   ArrowUp,
   Menu,
   X,
-  Beaker,
   BookOpen,
   Scale,
   Eye,
   FileText,
   CheckCircle2,
-  AlertCircle,
   FlaskConical,
   TreePine,
   GraduationCap,
   Globe,
-  Recycle,
   Lock,
   BarChart3,
   Send,
   UserPlus,
   ChevronDown,
-  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,6 +43,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/hooks/use-toast";
 
 /* ─────────── ANIMATED COUNTER ─────────── */
 function AnimatedCounter({
@@ -375,6 +371,7 @@ function ReportCard({
   pages,
   code,
   status,
+  onRequest,
 }: {
   title: string;
   type: string;
@@ -382,6 +379,7 @@ function ReportCard({
   pages: number;
   code: string;
   status: "available" | "upcoming";
+  onRequest?: (title: string) => void;
 }) {
   return (
     <motion.div
@@ -402,7 +400,10 @@ function ReportCard({
         {status === "available" ? `${pages} pages · ${year}` : `En préparation · ${year}`}
       </p>
       {status === "available" ? (
-        <button className="inline-flex items-center gap-2 rounded-lg border border-gold-500/30 bg-gold-500/10 px-4 py-2 text-sm font-medium text-gold-300 transition-colors hover:bg-gold-500/20">
+        <button
+          onClick={() => onRequest?.(title)}
+          className="inline-flex items-center gap-2 rounded-lg border border-gold-500/30 bg-gold-500/10 px-4 py-2 text-sm font-medium text-gold-300 transition-colors hover:bg-gold-500/20"
+        >
           <FileText className="h-4 w-4" />
           Demander le rapport
         </button>
@@ -423,6 +424,7 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1226,6 +1228,7 @@ export default function Home() {
             pages={48}
             code="RA-2023"
             status="available"
+            onRequest={(t) => toast({ title: "Demande envoyée", description: `Votre demande pour "${t}" a été enregistrée. Vous recevrez le document par email.` })}
           />
           <ReportCard
             title="Rapport Financier 2023"
@@ -1234,6 +1237,7 @@ export default function Home() {
             pages={24}
             code="RF-2023"
             status="available"
+            onRequest={(t) => toast({ title: "Demande envoyée", description: `Votre demande pour "${t}" a été enregistrée. Vous recevrez le document par email.` })}
           />
           <ReportCard
             title="Étude Scoparia dulcis"
@@ -1242,6 +1246,7 @@ export default function Home() {
             pages={72}
             code="ES-2023"
             status="available"
+            onRequest={(t) => toast({ title: "Demande envoyée", description: `Votre demande pour "${t}" a été enregistrée. Vous recevrez le document par email.` })}
           />
           <ReportCard
             title="Rapport Annuel 2022"
@@ -1250,6 +1255,7 @@ export default function Home() {
             pages={44}
             code="RA-2022"
             status="available"
+            onRequest={(t) => toast({ title: "Demande envoyée", description: `Votre demande pour "${t}" a été enregistrée. Vous recevrez le document par email.` })}
           />
           <ReportCard
             title="Rapport Financier 2022"
@@ -1258,6 +1264,7 @@ export default function Home() {
             pages={20}
             code="RF-2022"
             status="available"
+            onRequest={(t) => toast({ title: "Demande envoyée", description: `Votre demande pour "${t}" a été enregistrée. Vous recevrez le document par email.` })}
           />
           <ReportCard
             title="Rapport Annuel 2024"
@@ -1368,6 +1375,11 @@ export default function Home() {
           <form
             onSubmit={(e: FormEvent) => {
               e.preventDefault();
+              toast({
+                title: "Candidature envoyée",
+                description: "Merci pour votre engagement. Notre équipe étudiera votre candidature et vous contactera sous 48h.",
+              });
+              (e.target as HTMLFormElement).reset();
             }}
             className="space-y-5 rounded-xl border border-gold-500/15 bg-earth-700/30 p-6 backdrop-blur-sm md:p-8"
           >
@@ -1610,6 +1622,11 @@ export default function Home() {
           <form
             onSubmit={(e: FormEvent) => {
               e.preventDefault();
+              toast({
+                title: "Message envoyé",
+                description: "Merci pour votre message. Notre équipe vous répondra sous 48h ouvrables.",
+              });
+              (e.target as HTMLFormElement).reset();
             }}
             className="space-y-5 rounded-xl border border-gold-500/15 bg-earth-700/30 p-6 backdrop-blur-sm md:p-8"
           >

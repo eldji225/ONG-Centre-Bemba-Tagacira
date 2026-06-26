@@ -1,0 +1,1908 @@
+     1→"use client";
+     2→
+     3→import { useState, useEffect, useRef, type FormEvent } from "react";
+     4→import { motion, useInView, AnimatePresence } from "framer-motion";
+     5→import {
+     6→  Leaf,
+     7→  Microscope,
+     8→  Shield,
+     9→  Users,
+    10→  ChevronRight,
+    11→  Phone,
+    12→  Mail,
+    13→  MapPin,
+    14→  Clock,
+    15→  Heart,
+    16→  HandHeart,
+    17→  ArrowUp,
+    18→  Menu,
+    19→  X,
+    20→  Beaker,
+    21→  BookOpen,
+    22→  Scale,
+    23→  Eye,
+    24→  FileText,
+    25→  CheckCircle2,
+    26→  AlertCircle,
+    27→  FlaskConical,
+    28→  TreePine,
+    29→  GraduationCap,
+    30→  Globe,
+    31→  Recycle,
+    32→  Lock,
+    33→  BarChart3,
+    34→  Send,
+    35→  UserPlus,
+    36→  ChevronDown,
+    37→  ExternalLink,
+    38→} from "lucide-react";
+    39→import { Button } from "@/components/ui/button";
+    40→import { Input } from "@/components/ui/input";
+    41→import { Textarea } from "@/components/ui/textarea";
+    42→import { Label } from "@/components/ui/label";
+    43→import {
+    44→  Select,
+    45→  SelectContent,
+    46→  SelectItem,
+    47→  SelectTrigger,
+    48→  SelectValue,
+    49→} from "@/components/ui/select";
+    50→import { Checkbox } from "@/components/ui/checkbox";
+    51→
+    52→/* ─────────── ANIMATED COUNTER ─────────── */
+    53→function AnimatedCounter({
+    54→  target,
+    55→  suffix = "",
+    56→  duration = 2000,
+    57→}: {
+    58→  target: number;
+    59→  suffix?: string;
+    60→  duration?: number;
+    61→}) {
+    62→  const [count, setCount] = useState(0);
+    63→  const ref = useRef<HTMLSpanElement>(null);
+    64→  const inView = useInView(ref, { once: true, margin: "-50px" });
+    65→
+    66→  useEffect(() => {
+    67→    if (!inView) return;
+    68→    let start = 0;
+    69→    const step = target / (duration / 16);
+    70→    const timer = setInterval(() => {
+    71→      start += step;
+    72→      if (start >= target) {
+    73→        setCount(target);
+    74→        clearInterval(timer);
+    75→      } else {
+    76→        setCount(Math.floor(start));
+    77→      }
+    78→    }, 16);
+    79→    return () => clearInterval(timer);
+    80→  }, [inView, target, duration]);
+    81→
+    82→  return (
+    83→    <span ref={ref} className="tabular-nums">
+    84→      {count.toLocaleString("fr-FR")}
+    85→      {suffix}
+    86→    </span>
+    87→  );
+    88→}
+    89→
+    90→/* ─────────── SECTION WRAPPER ─────────── */
+    91→function Section({
+    92→  id,
+    93→  children,
+    94→  className = "",
+    95→  dark = false,
+    96→}: {
+    97→  id: string;
+    98→  children: React.ReactNode;
+    99→  className?: string;
+   100→  dark?: boolean;
+   101→}) {
+   102→  return (
+   103→    <section
+   104→      id={id}
+   105→      className={`relative py-20 md:py-28 ${
+   106→        dark ? "bg-earth-900" : "bg-earth-800"
+   107→      } ${className}`}
+   108→    >
+   109→      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">{children}</div>
+   110→    </section>
+   111→  );
+   112→}
+   113→
+   114→/* ─────────── SECTION HEADER ─────────── */
+   115→function SectionHeader({
+   116→  label,
+   117→  title,
+   118→  description,
+   119→}: {
+   120→  label: string;
+   121→  title: string;
+   122→  description?: string;
+   123→}) {
+   124→  return (
+   125→    <div className="mb-12 text-center md:mb-16">
+   126→      <span className="mb-3 inline-block rounded-full border border-gold-500/30 bg-gold-500/10 px-4 py-1.5 text-xs font-semibold tracking-widest text-gold-400 uppercase">
+   127→        {label}
+   128→      </span>
+   129→      <h2 className="mt-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+   130→        {title}
+   131→      </h2>
+   132→      {description && (
+   133→        <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">
+   134→          {description}
+   135→        </p>
+   136→      )}
+   137→      <div className="section-divider mx-auto mt-6" />
+   138→    </div>
+   139→  );
+   140→}
+   141→
+   142→/* ─────────── STAT CARD ─────────── */
+   143→function StatCard({
+   144→  icon: Icon,
+   145→  value,
+   146→  suffix,
+   147→  label,
+   148→  color,
+   149→}: {
+   150→  icon: React.ElementType;
+   151→  value: number;
+   152→  suffix?: string;
+   153→  label: string;
+   154→  color: "gold" | "emerald";
+   155→}) {
+   156→  const borderColor =
+   157→    color === "gold" ? "border-gold-500/30" : "border-emerald-500/30";
+   158→  const iconColor =
+   159→    color === "gold" ? "text-gold-400" : "text-emerald-400";
+   160→  const numColor =
+   161→    color === "gold" ? "text-gold-300" : "text-emerald-300";
+   162→
+   163→  return (
+   164→    <motion.div
+   165→      initial={{ opacity: 0, y: 20 }}
+   166→      whileInView={{ opacity: 1, y: 0 }}
+   167→      viewport={{ once: true, margin: "-30px" }}
+   168→      transition={{ duration: 0.5 }}
+   169→      className={`rounded-xl border ${borderColor} bg-earth-700/50 p-6 text-center backdrop-blur-sm`}
+   170→    >
+   171→      <Icon className={`mx-auto mb-3 h-8 w-8 ${iconColor}`} />
+   172→      <div className={`text-3xl font-bold md:text-4xl ${numColor}`}>
+   173→        <AnimatedCounter target={value} suffix={suffix} />
+   174→      </div>
+   175→      <p className="mt-2 text-sm text-muted-foreground">{label}</p>
+   176→    </motion.div>
+   177→  );
+   178→}
+   179→
+   180→/* ─────────── MISSION CARD ─────────── */
+   181→function MissionCard({
+   182→  number,
+   183→  icon: Icon,
+   184→  title,
+   185→  subtitle,
+   186→  description,
+   187→  tags,
+   188→  color,
+   189→}: {
+   190→  number: string;
+   191→  icon: React.ElementType;
+   192→  title: string;
+   193→  subtitle: string;
+   194→  description: string;
+   195→  tags: string[];
+   196→  color: "gold" | "emerald" | "sky" | "lime";
+   197→}) {
+   198→  const colorMap = {
+   199→    gold: {
+   200→      border: "border-gold-500/20 hover:border-gold-500/50",
+   201→      icon: "text-gold-400",
+   202→      badge: "bg-gold-500/10 text-gold-300",
+   203→      num: "text-gold-500/30",
+   204→    },
+   205→    emerald: {
+   206→      border: "border-emerald-500/20 hover:border-emerald-500/50",
+   207→      icon: "text-emerald-400",
+   208→      badge: "bg-emerald-500/10 text-emerald-300",
+   209→      num: "text-emerald-500/30",
+   210→    },
+   211→    sky: {
+   212→      border: "border-sky-500/20 hover:border-sky-500/50",
+   213→      icon: "text-sky-400",
+   214→      badge: "bg-sky-500/10 text-sky-300",
+   215→      num: "text-sky-500/30",
+   216→    },
+   217→    lime: {
+   218→      border: "border-lime-500/20 hover:border-lime-500/50",
+   219→      icon: "text-lime-400",
+   220→      badge: "bg-lime-500/10 text-lime-300",
+   221→      num: "text-lime-500/30",
+   222→    },
+   223→  };
+   224→  const c = colorMap[color];
+   225→
+   226→  return (
+   227→    <motion.div
+   228→      initial={{ opacity: 0, y: 20 }}
+   229→      whileInView={{ opacity: 1, y: 0 }}
+   230→      viewport={{ once: true, margin: "-30px" }}
+   231→      transition={{ duration: 0.5 }}
+   232→      className={`group relative overflow-hidden rounded-xl border ${c.border} bg-earth-700/40 p-6 transition-all duration-300 backdrop-blur-sm`}
+   233→    >
+   234→      <span
+   235→        className={`absolute -right-2 -top-2 text-7xl font-black ${c.num}`}
+   236→      >
+   237→        {number}
+   238→      </span>
+   239→      <div className="relative z-10">
+   240→        <Icon className={`mb-3 h-7 w-7 ${c.icon}`} />
+   241→        <h3 className="text-lg font-bold text-white">{title}</h3>
+   242→        <p className="mb-3 text-xs font-medium tracking-wider text-muted-foreground uppercase">
+   243→          {subtitle}
+   244→        </p>
+   245→        <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+   246→          {description}
+   247→        </p>
+   248→        <div className="flex flex-wrap gap-2">
+   249→          {tags.map((tag) => (
+   250→            <span
+   251→              key={tag}
+   252→              className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${c.badge}`}
+   253→            >
+   254→              {tag}
+   255→            </span>
+   256→          ))}
+   257→        </div>
+   258→      </div>
+   259→    </motion.div>
+   260→  );
+   261→}
+   262→
+   263→/* ─────────── ETHICS ARTICLE ─────────── */
+   264→function EthicsArticle({
+   265→  number,
+   266→  icon: Icon,
+   267→  title,
+   268→  subtitle,
+   269→  commitments,
+   270→}: {
+   271→  number: string;
+   272→  icon: React.ElementType;
+   273→  title: string;
+   274→  subtitle: string;
+   275→  commitments: { heading: string; text: string }[];
+   276→}) {
+   277→  return (
+   278→    <motion.div
+   279→      initial={{ opacity: 0, x: -20 }}
+   280→      whileInView={{ opacity: 1, x: 0 }}
+   281→      viewport={{ once: true, margin: "-30px" }}
+   282→      transition={{ duration: 0.5 }}
+   283→      className="rounded-xl border border-gold-500/15 bg-earth-700/40 p-6 backdrop-blur-sm md:p-8"
+   284→    >
+   285→      <div className="mb-4 flex items-start gap-4">
+   286→        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gold-500/10">
+   287→          <Icon className="h-6 w-6 text-gold-400" />
+   288→        </div>
+   289→        <div>
+   290→          <span className="text-xs font-bold tracking-widest text-gold-500 uppercase">
+   291→            Article {number}
+   292→          </span>
+   293→          <h3 className="text-xl font-bold text-white">{title}</h3>
+   294→          <p className="text-sm text-muted-foreground">{subtitle}</p>
+   295→        </div>
+   296→      </div>
+   297→      <div className="space-y-4 pl-0 md:pl-16">
+   298→        {commitments.map((c, i) => (
+   299→          <div key={i}>
+   300→            <h4 className="mb-1 text-sm font-semibold text-gold-300">
+   301→              {c.heading}
+   302→            </h4>
+   303→            <p className="text-sm leading-relaxed text-muted-foreground">
+   304→              {c.text}
+   305→            </p>
+   306→          </div>
+   307→        ))}
+   308→      </div>
+   309→    </motion.div>
+   310→  );
+   311→}
+   312→
+   313→/* ─────────── PILLAR CARD ─────────── */
+   314→function PillarCard({
+   315→  icon: Icon,
+   316→  title,
+   317→  description,
+   318→  color,
+   319→}: {
+   320→  icon: React.ElementType;
+   321→  title: string;
+   322→  description: string;
+   323→  color: "gold" | "emerald" | "sky" | "amber";
+   324→}) {
+   325→  const colorMap = {
+   326→    gold: {
+   327→      border: "border-gold-500/20 hover:border-gold-500/50",
+   328→      iconBg: "bg-gold-500/10",
+   329→      iconColor: "text-gold-400",
+   330→    },
+   331→    emerald: {
+   332→      border: "border-emerald-500/20 hover:border-emerald-500/50",
+   333→      iconBg: "bg-emerald-500/10",
+   334→      iconColor: "text-emerald-400",
+   335→    },
+   336→    sky: {
+   337→      border: "border-sky-500/20 hover:border-sky-500/50",
+   338→      iconBg: "bg-sky-500/10",
+   339→      iconColor: "text-sky-400",
+   340→    },
+   341→    amber: {
+   342→      border: "border-amber-500/20 hover:border-amber-500/50",
+   343→      iconBg: "bg-amber-500/10",
+   344→      iconColor: "text-amber-400",
+   345→    },
+   346→  };
+   347→  const c = colorMap[color];
+   348→
+   349→  return (
+   350→    <motion.div
+   351→      initial={{ opacity: 0, y: 20 }}
+   352→      whileInView={{ opacity: 1, y: 0 }}
+   353→      viewport={{ once: true }}
+   354→      transition={{ duration: 0.5 }}
+   355→      className={`rounded-xl border ${c.border} bg-earth-700/40 p-6 transition-all duration-300 backdrop-blur-sm`}
+   356→    >
+   357→      <div
+   358→        className={`mb-4 flex h-12 w-12 items-center justify-center rounded-lg ${c.iconBg}`}
+   359→      >
+   360→        <Icon className={`h-6 w-6 ${c.iconColor}`} />
+   361→      </div>
+   362→      <h3 className="mb-2 text-lg font-bold text-white">{title}</h3>
+   363→      <p className="text-sm leading-relaxed text-muted-foreground">
+   364→        {description}
+   365→      </p>
+   366→    </motion.div>
+   367→  );
+   368→}
+   369→
+   370→/* ─────────── REPORT CARD ─────────── */
+   371→function ReportCard({
+   372→  title,
+   373→  type,
+   374→  year,
+   375→  pages,
+   376→  code,
+   377→  status,
+   378→}: {
+   379→  title: string;
+   380→  type: string;
+   381→  year: number;
+   382→  pages: number;
+   383→  code: string;
+   384→  status: "available" | "upcoming";
+   385→}) {
+   386→  return (
+   387→    <motion.div
+   388→      initial={{ opacity: 0, y: 15 }}
+   389→      whileInView={{ opacity: 1, y: 0 }}
+   390→      viewport={{ once: true }}
+   391→      transition={{ duration: 0.4 }}
+   392→      className="rounded-lg border border-gold-500/10 bg-earth-700/40 p-5 backdrop-blur-sm"
+   393→    >
+   394→      <div className="mb-3 flex items-center justify-between">
+   395→        <span className="rounded-full bg-gold-500/10 px-3 py-1 text-xs font-medium text-gold-300">
+   396→          {type}
+   397→        </span>
+   398→        <span className="text-xs text-muted-foreground">{code}</span>
+   399→      </div>
+   400→      <h4 className="mb-1 font-semibold text-white">{title}</h4>
+   401→      <p className="mb-4 text-xs text-muted-foreground">
+   402→        {status === "available" ? `${pages} pages · ${year}` : `En préparation · ${year}`}
+   403→      </p>
+   404→      {status === "available" ? (
+   405→        <button className="inline-flex items-center gap-2 rounded-lg border border-gold-500/30 bg-gold-500/10 px-4 py-2 text-sm font-medium text-gold-300 transition-colors hover:bg-gold-500/20">
+   406→          <FileText className="h-4 w-4" />
+   407→          Demander le rapport
+   408→        </button>
+   409→      ) : (
+   410→        <span className="inline-flex items-center gap-2 rounded-lg border border-muted-foreground/20 bg-earth-600/30 px-4 py-2 text-sm text-muted-foreground">
+   411→          <Clock className="h-4 w-4" />
+   412→          En cours de preparation
+   413→        </span>
+   414→      )}
+   415→    </motion.div>
+   416→  );
+   417→}
+   418→
+   419→/* ═══════════════════════════════════════════════════
+   420→   MAIN PAGE COMPONENT
+   421→   ═══════════════════════════════════════════════════ */
+   422→export default function Home() {
+   423→  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+   424→  const [scrolled, setScrolled] = useState(false);
+   425→  const [showBackToTop, setShowBackToTop] = useState(false);
+   426→
+   427→  useEffect(() => {
+   428→    const handleScroll = () => {
+   429→      setScrolled(window.scrollY > 50);
+   430→      setShowBackToTop(window.scrollY > 600);
+   431→    };
+   432→    window.addEventListener("scroll", handleScroll, { passive: true });
+   433→    return () => window.removeEventListener("scroll", handleScroll);
+   434→  }, []);
+   435→
+   436→  const navLinks = [
+   437→    { href: "#accueil", label: "Accueil" },
+   438→    { href: "#presentation", label: "L'ONG" },
+   439→    { href: "#impact", label: "Impact" },
+   440→    { href: "#missions", label: "Missions" },
+   441→    { href: "#charte", label: "Charte" },
+   442→    { href: "#transparence", label: "Transparence" },
+   443→    { href: "#contact", label: "Contact" },
+   444→  ];
+   445→
+   446→  return (
+   447→    <div className="min-h-screen bg-earth-900 text-foreground">
+   448→      {/* ─────────── HEADER / NAV ─────────── */}
+   449→      <header
+   450→        className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
+   451→          scrolled
+   452→            ? "border-b border-gold-500/10 bg-earth-900/95 shadow-lg shadow-black/20 backdrop-blur-md"
+   453→            : "bg-transparent"
+   454→        }`}
+   455→      >
+   456→        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+   457→          {/* Logo */}
+   458→          <a href="#accueil" className="flex items-center gap-3">
+   459→            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gold-500/10">
+   460→              <Leaf className="h-5 w-5 text-gold-400" />
+   461→            </div>
+   462→            <div className="hidden sm:block">
+   463→              <span className="text-sm font-bold text-white">
+   464→                Centre Bemba Tagaçira
+   465→              </span>
+   466→              <span className="block text-[10px] tracking-wider text-muted-foreground uppercase">
+   467→                ONG &middot; Abidjan
+   468→              </span>
+   469→            </div>
+   470→          </a>
+   471→
+   472→          {/* Desktop nav */}
+   473→          <nav className="hidden items-center gap-1 lg:flex">
+   474→            {navLinks.map((link) => (
+   475→              <a
+   476→                key={link.href}
+   477→                href={link.href}
+   478→                className="rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-earth-700/50 hover:text-white"
+   479→              >
+   480→                {link.label}
+   481→              </a>
+   482→            ))}
+   483→          </nav>
+   484→
+   485→          {/* Desktop CTAs */}
+   486→          <div className="hidden items-center gap-3 lg:flex">
+   487→            <a href="#adhesion">
+   488→              <Button
+   489→                variant="outline"
+   490→                size="sm"
+   491→                className="border-gold-500/30 bg-gold-500/10 text-gold-300 hover:bg-gold-500/20 hover:text-gold-200"
+   492→              >
+   493→                <HandHeart className="mr-2 h-4 w-4" />
+   494→                Devenir Sentinelle
+   495→              </Button>
+   496→            </a>
+   497→            <a href="#contact">
+   498→              <Button
+   499→                size="sm"
+   500→                className="bg-emerald-600 text-white hover:bg-emerald-500"
+   501→              >
+   502→                <Heart className="mr-2 h-4 w-4" />
+   503→                Soutenir l'ONG
+   504→              </Button>
+   505→            </a>
+   506→          </div>
+   507→
+   508→          {/* Mobile menu toggle */}
+   509→          <button
+   510→            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+   511→            className="rounded-lg p-2 text-muted-foreground hover:bg-earth-700/50 hover:text-white lg:hidden"
+   512→            aria-label="Menu"
+   513→          >
+   514→            {mobileMenuOpen ? (
+   515→              <X className="h-6 w-6" />
+   516→            ) : (
+   517→              <Menu className="h-6 w-6" />
+   518→            )}
+   519→          </button>
+   520→        </div>
+   521→
+   522→        {/* Mobile nav */}
+   523→        <AnimatePresence>
+   524→          {mobileMenuOpen && (
+   525→            <motion.div
+   526→              initial={{ opacity: 0, height: 0 }}
+   527→              animate={{ opacity: 1, height: "auto" }}
+   528→              exit={{ opacity: 0, height: 0 }}
+   529→              className="overflow-hidden border-t border-gold-500/10 bg-earth-900/98 backdrop-blur-md lg:hidden"
+   530→            >
+   531→              <nav className="flex flex-col gap-1 px-4 py-4">
+   532→                {navLinks.map((link) => (
+   533→                  <a
+   534→                    key={link.href}
+   535→                    href={link.href}
+   536→                    onClick={(e) => {
+   537→                      e.preventDefault();
+   538→                      const hash = link.href.startsWith("#") ? link.href : `#${link.href.split("#")[1]}`;
+   539→                      setMobileMenuOpen(false);
+   540→                      setTimeout(() => {
+   541→                        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+   542→                      }, 300);
+   543→                    }}
+   544→                    className="rounded-lg px-4 py-3 text-sm text-muted-foreground transition-colors hover:bg-earth-700/50 hover:text-white"
+   545→                  >
+   546→                    {link.label}
+   547→                  </a>
+   548→                ))}
+   549→                <hr className="my-2 border-gold-500/10" />
+   550→                <a
+   551→                  href="#adhesion"
+   552→                  onClick={(e) => {
+   553→                    e.preventDefault();
+   554→                    setMobileMenuOpen(false);
+   555→                    setTimeout(() => {
+   556→                      document.querySelector("#adhesion")?.scrollIntoView({ behavior: "smooth" });
+   557→                    }, 300);
+   558→                  }}
+   559→                  className="rounded-lg px-4 py-3 text-sm font-medium text-gold-300 transition-colors hover:bg-gold-500/10"
+   560→                >
+   561→                  <HandHeart className="mr-2 inline h-4 w-4" />
+   562→                  Devenir Sentinelle
+   563→                </a>
+   564→                <a
+   565→                  href="#contact"
+   566→                  onClick={(e) => {
+   567→                    e.preventDefault();
+   568→                    setMobileMenuOpen(false);
+   569→                    setTimeout(() => {
+   570→                      document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+   571→                    }, 300);
+   572→                  }}
+   573→                  className="rounded-lg px-4 py-3 text-sm font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10"
+   574→                >
+   575→                  <Heart className="mr-2 inline h-4 w-4" />
+   576→                  Soutenir l'ONG
+   577→                </a>
+   578→              </nav>
+   579→            </motion.div>
+   580→          )}
+   581→        </AnimatePresence>
+   582→      </header>
+   583→
+   584→      {/* ─────────── HERO ─────────── */}
+   585→      <section
+   586→        id="accueil"
+   587→        className="relative flex min-h-screen items-center overflow-hidden"
+   588→      >
+   589→        {/* Background */}
+   590→        <div className="absolute inset-0 bg-gradient-to-br from-earth-900 via-[#1a1a0e] to-[#0d1a0d]" />
+   591→        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(200,164,21,0.06),transparent_50%)]" />
+   592→        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(5,150,105,0.06),transparent_50%)]" />
+   593→
+   594→        {/* Decorative pattern */}
+   595→        <div className="absolute inset-0 opacity-[0.02]" style={{
+   596→          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8a415' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+   597→        }} />
+   598→
+   599→        <div className="relative z-10 mx-auto max-w-6xl px-4 py-32 sm:px-6 lg:px-8">
+   600→          <motion.div
+   601→            initial={{ opacity: 0, y: 30 }}
+   602→            animate={{ opacity: 1, y: 0 }}
+   603→            transition={{ duration: 0.8 }}
+   604→            className="text-center"
+   605→          >
+   606→            {/* Badge */}
+   607→            <motion.div
+   608→              initial={{ opacity: 0, y: -10 }}
+   609→              animate={{ opacity: 1, y: 0 }}
+   610→              transition={{ delay: 0.2, duration: 0.5 }}
+   611→              className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold-500/20 bg-gold-500/5 px-5 py-2 text-sm text-gold-300"
+   612→            >
+   613→              <span className="text-base">🇨🇮</span>
+   614→              ONG de droit ivoirien &mdash; Abidjan, Côte d'Ivoire
+   615→            </motion.div>
+   616→
+   617→            {/* Title */}
+   618→            <h1 className="mb-2 text-4xl font-black tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+   619→              Centre Bemba{" "}
+   620→              <span className="text-gradient-gold">Tagaçira</span>
+   621→            </h1>
+   622→
+   623→            {/* Subtitle */}
+   624→            <p className="mb-6 text-lg font-medium text-emerald-400 md:text-xl">
+   625→              Pharmacopée Africaine
+   626→            </p>
+   627→
+   628→            {/* Decorative separator */}
+   629→            <div className="section-divider mx-auto mb-8" />
+   630→
+   631→            {/* Tagline */}
+   632→            <p className="mx-auto mb-4 max-w-2xl text-xl font-light italic text-gold-200/80 md:text-2xl">
+   633→              La science au service de la tradition, la tradition pour la
+   634→              protection de la vie.
+   635→            </p>
+   636→
+   637→            {/* Description */}
+   638→            <p className="mx-auto mb-10 max-w-3xl text-base leading-relaxed text-muted-foreground md:text-lg">
+   639→              Organisation ivoirienne dédiée à la valorisation de la pharmacopée
+   640→              africaine par la rigueur scientifique. Recherche biochimique,
+   641→              standardisation des préparations médicinales et transmission des
+   642→              savoirs ancestraux &mdash; depuis Abidjan, pour toute l'Afrique.
+   643→            </p>
+   644→
+   645→            {/* CTA Buttons */}
+   646→            <div className="flex flex-wrap items-center justify-center gap-4">
+   647→              <a href="#presentation">
+   648→                <Button
+   649→                  size="lg"
+   650→                  className="bg-gold-500 text-earth-900 hover:bg-gold-400"
+   651→                >
+   652→                  Découvrir l'ONG
+   653→                  <ChevronRight className="ml-2 h-4 w-4" />
+   654→                </Button>
+   655→              </a>
+   656→              <a href="#contact">
+   657→                <Button
+   658→                  size="lg"
+   659→                  className="bg-emerald-600 text-white hover:bg-emerald-500"
+   660→                >
+   661→                  <Heart className="mr-2 h-4 w-4" />
+   662→                  Soutenir l'ONG
+   663→                </Button>
+   664→              </a>
+   665→              <a href="#adhesion">
+   666→                <Button
+   667→                  variant="outline"
+   668→                  size="lg"
+   669→                  className="border-gold-500/30 text-gold-300 hover:bg-gold-500/10 hover:text-gold-200"
+   670→                >
+   671→                  <HandHeart className="mr-2 h-4 w-4" />
+   672→                  Devenir Sentinelle
+   673→                </Button>
+   674→              </a>
+   675→            </div>
+   676→
+   677→            {/* Stats bar */}
+   678→            <motion.div
+   679→              initial={{ opacity: 0, y: 20 }}
+   680→              animate={{ opacity: 1, y: 0 }}
+   681→              transition={{ delay: 0.6, duration: 0.6 }}
+   682→              className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 md:gap-8"
+   683→            >
+   684→              {[
+   685→                {
+   686→                  value: 3200,
+   687→                  suffix: "+",
+   688→                  label: "Bénéficiaires",
+   689→                  color: "emerald" as const,
+   690→                  icon: Users,
+   691→                },
+   692→                {
+   693→                  value: 5,
+   694→                  suffix: " ans",
+   695→                  label: "D'activité",
+   696→                  color: "gold" as const,
+   697→                  icon: Clock,
+   698→                },
+   699→                {
+   700→                  value: 98,
+   701→                  suffix: "%",
+   702→                  label: "Conformité",
+   703→                  color: "emerald" as const,
+   704→                  icon: CheckCircle2,
+   705→                },
+   706→                {
+   707→                  value: 120,
+   708→                  suffix: "+",
+   709→                  label: "Sentinelles formées",
+   710→                  color: "gold" as const,
+   711→                  icon: GraduationCap,
+   712→                },
+   713→              ].map((stat) => (
+   714→                <div
+   715→                  key={stat.label}
+   716→                  className="rounded-xl border border-gold-500/10 bg-earth-800/60 p-4 backdrop-blur-sm"
+   717→                >
+   718→                  <stat.icon
+   719→                    className={`mx-auto mb-2 h-5 w-5 ${
+   720→                      stat.color === "gold"
+   721→                        ? "text-gold-400"
+   722→                        : "text-emerald-400"
+   723→                    }`}
+   724→                  />
+   725→                  <div
+   726→                    className={`text-2xl font-bold md:text-3xl ${
+   727→                      stat.color === "gold"
+   728→                        ? "text-gold-300"
+   729→                        : "text-emerald-300"
+   730→                    }`}
+   731→                  >
+   732→                    <AnimatedCounter
+   733→                      target={stat.value}
+   734→                      suffix={stat.suffix}
+   735→                    />
+   736→                  </div>
+   737→                  <p className="mt-1 text-xs text-muted-foreground">
+   738→                    {stat.label}
+   739→                  </p>
+   740→                </div>
+   741→              ))}
+   742→            </motion.div>
+   743→
+   744→            {/* Founder credit */}
+   745→            <motion.p
+   746→              initial={{ opacity: 0 }}
+   747→              animate={{ opacity: 1 }}
+   748→              transition={{ delay: 1, duration: 0.5 }}
+   749→              className="mt-8 text-sm text-muted-foreground"
+   750→            >
+   751→              Fondé par{" "}
+   752→              <span className="font-medium text-gold-300">
+   753→                Tounkara Al Foussein
+   754→              </span>{" "}
+   755→              &mdash; Expert en chimie alimentaire & contrôle qualité &middot;
+   756→              Ethnobotaniste
+   757→            </motion.p>
+   758→          </motion.div>
+   759→        </div>
+   760→
+   761→        {/* Scroll indicator */}
+   762→        <motion.div
+   763→          animate={{ y: [0, 8, 0] }}
+   764→          transition={{ repeat: Infinity, duration: 2 }}
+   765→          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+   766→        >
+   767→          <ChevronDown className="h-6 w-6 text-gold-500/40" />
+   768→        </motion.div>
+   769→      </section>
+   770→
+   771→      {/* ─────────── PRÉSENTATION ─────────── */}
+   772→      <Section id="presentation" dark>
+   773→        <SectionHeader
+   774→          label="Qui sommes-nous"
+   775→          title="L'ONG Centre Bemba Tagaçira"
+   776→          description="Nous sommes convaincus que la pharmacopée ivoirienne, lorsqu'elle est encadrée par une démarche scientifique rigoureuse, constitue un levier majeur pour la santé communautaire et le développement durable."
+   777→        />
+   778→
+   779→        {/* Founder quote */}
+   780→        <motion.blockquote
+   781→          initial={{ opacity: 0, y: 20 }}
+   782→          whileInView={{ opacity: 1, y: 0 }}
+   783→          viewport={{ once: true }}
+   784→          transition={{ duration: 0.6 }}
+   785→          className="mx-auto mb-16 max-w-3xl rounded-xl border-l-4 border-gold-500/40 bg-earth-700/30 p-6 md:p-8"
+   786→        >
+   787→          <p className="mb-4 text-base leading-relaxed italic text-gold-200/80 md:text-lg">
+   788→            &ldquo;Fort d'une expertise en chimie alimentaire et contrôle
+   789→            qualité, et héritier de savoirs ethnobotaniques ancestraux, j'ai
+   790→            fondé ce centre avec une vision novatrice : concilier la rigueur des
+   791→            protocoles de laboratoire avec la profondeur de la médecine
+   792→            traditionnelle africaine.&rdquo;
+   793→          </p>
+   794→          <footer className="text-sm text-muted-foreground">
+   795→            <span className="font-medium text-gold-300">
+   796→              Tounkara Al Foussein
+   797→            </span>
+   798→            , Président &mdash; ONG Centre Bemba Tagaçira, Abidjan, Côte
+   799→            d'Ivoire
+   800→          </footer>
+   801→        </motion.blockquote>
+   802→
+   803→        {/* Approach */}
+   804→        <motion.div
+   805→          initial={{ opacity: 0, y: 20 }}
+   806→          whileInView={{ opacity: 1, y: 0 }}
+   807→          viewport={{ once: true }}
+   808→          transition={{ duration: 0.5, delay: 0.1 }}
+   809→          className="mx-auto mb-16 max-w-3xl rounded-xl border border-emerald-500/15 bg-emerald-500/5 p-6 text-center md:p-8"
+   810→        >
+   811→          <h3 className="mb-3 text-lg font-bold text-emerald-400">
+   812→            Notre Approche
+   813→          </h3>
+   814→          <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+   815→            Notre démarche repose sur une approche holistique de la santé,
+   816→            visant à renforcer les défenses naturelles de l'individu par des
+   817→            méthodes naturelles contrôlées et tracées. Chaque préparation est
+   818→            soumise à des protocoles rigoureux de contrôle qualité, incluant la
+   819→            mesure du pH, l'analyse microbiologique et la traçabilité complète de
+   820→            la chaîne de production, de la cueillette à la distribution.
+   821→          </p>
+   822→        </motion.div>
+   823→
+   824→        {/* 4 Pillars */}
+   825→        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+   826→          <PillarCard
+   827→            icon={Microscope}
+   828→            title="Recherche & Développement"
+   829→            description="Étude biochimique et microbiologique des plantes médicinales, notamment le Scoparia dulcis (Timitimi), pour garantir leur efficacité et sécurité sanitaire."
+   830→            color="gold"
+   831→          />
+   832→          <PillarCard
+   833→            icon={BarChart3}
+   834→            title="Standardisation"
+   835→            description="Mise en place de normes de contrôle qualité strictes (pH, analyse microbiologique, traçabilité) pour les préparations médicinales traditionnelles."
+   836→            color="emerald"
+   837→          />
+   838→          <PillarCard
+   839→            icon={BookOpen}
+   840→            title="Transmission"
+   841→            description="Formation d'une nouvelle génération de Sentinelles au respect des ressources naturelles et des protocoles d'hygiène et de qualité."
+   842→            color="sky"
+   843→          />
+   844→          <PillarCard
+   845→            icon={Users}
+   846→            title="Collaboration"
+   847→            description="Ouverture à toute collaboration institutionnelle visant à intégrer nos solutions dans le paysage sanitaire national ivoirien."
+   848→            color="amber"
+   849→          />
+   850→        </div>
+   851→
+   852→        {/* Key facts */}
+   853→        <motion.div
+   854→          initial={{ opacity: 0, y: 20 }}
+   855→          whileInView={{ opacity: 1, y: 0 }}
+   856→          viewport={{ once: true }}
+   857→          className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4"
+   858→        >
+   859→          {[
+   860→            { icon: Leaf, label: "7 Plantes étudiées", sub: "Dont Scoparia dulcis" },
+   861→            { icon: MapPin, label: "Abidjan", sub: "Siège social" },
+   862→            { icon: Scale, label: "Droit ivoirien", sub: "ONG enregistrée" },
+   863→            { icon: Users, label: "Réseau de Sentinelles", sub: "Formées & actives" },
+   864→          ].map((fact) => (
+   865→            <div
+   866→              key={fact.label}
+   867→              className="rounded-lg border border-gold-500/10 bg-earth-700/30 p-4 text-center"
+   868→            >
+   869→              <fact.icon className="mx-auto mb-2 h-5 w-5 text-gold-400" />
+   870→              <p className="text-sm font-semibold text-white">{fact.label}</p>
+   871→              <p className="text-xs text-muted-foreground">{fact.sub}</p>
+   872→            </div>
+   873→          ))}
+   874→        </motion.div>
+   875→      </Section>
+   876→
+   877→      {/* ─────────── IMPACT ─────────── */}
+   878→      <Section id="impact">
+   879→        <SectionHeader
+   880→          label="Notre Impact"
+   881→          title="Des Résultats Concrets"
+   882→          description="Depuis 2019, le Centre Bemba Tagaçira oeuvre à la valorisation scientifique de la pharmacopée africaine au bénéfice des communautés ivoiriennes."
+   883→        />
+   884→
+   885→        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+   886→          <StatCard
+   887→            icon={Users}
+   888→            value={3200}
+   889→            suffix="+"
+   890→            label="Communautés accompagnées"
+   891→            color="emerald"
+   892→          />
+   893→          <StatCard
+   894→            icon={FileText}
+   895→            value={47}
+   896→            label="Projets réalisés"
+   897→            color="gold"
+   898→          />
+   899→          <StatCard
+   900→            icon={Clock}
+   901→            value={5}
+   902→            suffix=" ans"
+   903→            label="D'activité depuis 2019"
+   904→            color="emerald"
+   905→          />
+   906→          <StatCard
+   907→            icon={GraduationCap}
+   908→            value={120}
+   909→            suffix="+"
+   910→            label="Sentinelles formées"
+   911→            color="gold"
+   912→          />
+   913→          <StatCard
+   914→            icon={Leaf}
+   915→            value={7}
+   916→            label="Espèces étudiées"
+   917→            color="emerald"
+   918→          />
+   919→          <StatCard
+   920→            icon={CheckCircle2}
+   921→            value={98}
+   922→            suffix="%"
+   923→            label="Taux de conformité"
+   924→            color="gold"
+   925→          />
+   926→        </div>
+   927→
+   928→        {/* CTA Cards */}
+   929→        <div className="mt-16 grid gap-6 sm:grid-cols-3">
+   930→          {[
+   931→            {
+   932→              icon: Heart,
+   933→              title: "Soutenir nos recherches",
+   934→              description:
+   935→                "Chaque contribution aide à financer nos recherches biochimiques et nos programmes de santé communautaire.",
+   936→              href: "#contact",
+   937→              color: "emerald" as const,
+   938→            },
+   939→            {
+   940→              icon: HandHeart,
+   941→              title: "Rejoindre les Sentinelles",
+   942→              description:
+   943→                "Devenez Sentinelle et engagez-vous dans la valorisation de la pharmacopée africaine.",
+   944→              href: "#adhesion",
+   945→              color: "gold" as const,
+   946→            },
+   947→            {
+   948→              icon: Mail,
+   949→              title: "Collaborer avec nous",
+   950→              description:
+   951→                "Institutions, chercheurs, ONG : nous sommes ouverts aux partenariats.",
+   952→              href: "#contact",
+   953→              color: "emerald" as const,
+   954→            },
+   955→          ].map((cta) => (
+   956→            <motion.a
+   957→              key={cta.title}
+   958→              href={cta.href}
+   959→              initial={{ opacity: 0, y: 20 }}
+   960→              whileInView={{ opacity: 1, y: 0 }}
+   961→              viewport={{ once: true }}
+   962→              transition={{ duration: 0.5 }}
+   963→              className={`group rounded-xl border p-6 transition-all duration-300 ${
+   964→                cta.color === "emerald"
+   965→                  ? "border-emerald-500/20 bg-emerald-500/5 hover:border-emerald-500/40 hover:bg-emerald-500/10"
+   966→                  : "border-gold-500/20 bg-gold-500/5 hover:border-gold-500/40 hover:bg-gold-500/10"
+   967→              }`}
+   968→            >
+   969→              <cta.icon
+   970→                className={`mb-3 h-8 w-8 ${
+   971→                  cta.color === "emerald"
+   972→                    ? "text-emerald-400"
+   973→                    : "text-gold-400"
+   974→                }`}
+   975→              />
+   976→              <h3 className="mb-2 text-lg font-bold text-white">
+   977→                {cta.title}
+   978→              </h3>
+   979→              <p className="mb-4 text-sm text-muted-foreground">
+   980→                {cta.description}
+   981→              </p>
+   982→              <span
+   983→                className={`inline-flex items-center text-sm font-medium ${
+   984→                  cta.color === "emerald"
+   985→                    ? "text-emerald-400"
+   986→                    : "text-gold-400"
+   987→                }`}
+   988→              >
+   989→                En savoir plus
+   990→                <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+   991→              </span>
+   992→            </motion.a>
+   993→          ))}
+   994→        </div>
+   995→      </Section>
+   996→
+   997→      {/* ─────────── MISSIONS ─────────── */}
+   998→      <Section id="missions" dark>
+   999→        <SectionHeader
+  1000→          label="Ce que nous faisons"
+  1001→          title="Nos Missions"
+  1002→          description="Six axes d'engagement pour valoriser la pharmacopée africaine et protéger les communautés."
+  1003→        />
+  1004→
+  1005→        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  1006→          <MissionCard
+  1007→            number="01"
+  1008→            icon={FlaskConical}
+  1009→            title="Étude Biochimique"
+  1010→            subtitle="Scoparia dulcis (Timitimi)"
+  1011→            description="Analyse approfondie des propriétés biochimiques et microbiologiques des plantes médicinales africaines, avec un focus particulier sur le Scoparia dulcis, pour en garantir l'efficacité thérapeutique et la sécurité sanitaire."
+  1012→            tags={["Microbiologie", "Biochimie", "Phytochimie"]}
+  1013→            color="gold"
+  1014→          />
+  1015→          <MissionCard
+  1016→            number="02"
+  1017→            icon={BarChart3}
+  1018→            title="Contrôle Qualité"
+  1019→            subtitle="Normes & Traçabilité"
+  1020→            description="Mise en place de standards rigoureux incluant la mesure du pH, le contrôle du microbiote commensal et la traçabilité complète de chaque lot de préparation médicinale pour garantir la reproductibilité des résultats."
+  1021→            tags={["pH", "Microbiote", "Traçabilité"]}
+  1022→            color="emerald"
+  1023→          />
+  1024→          <MissionCard
+  1025→            number="03"
+  1026→            icon={GraduationCap}
+  1027→            title="Formation des Sentinelles"
+  1028→            subtitle="Transmission du savoir"
+  1029→            description="Programme de formation d'une nouvelle génération de Sentinelles engagées dans le respect des ressources naturelles, les protocoles d'hygiène stricts et la préservation des savoirs ethnobotaniques africains."
+  1030→            tags={["Hygiène", "Ethnobotanique", "Protocoles"]}
+  1031→            color="sky"
+  1032→          />
+  1033→          <MissionCard
+  1034→            number="04"
+  1035→            icon={Shield}
+  1036→            title="Lutte contre la Biopiraterie"
+  1037→            subtitle="Protection du patrimoine"
+  1038→            description="Opposition ferme à toute exploitation commerciale des savoirs ancestraux qui ne bénéficierait pas aux communautés dépositaires. Défense du patrimoine intellectuel et naturel des peuples africains."
+  1039→            tags={["Droit", "Communauté", "Protection"]}
+  1040→            color="emerald"
+  1041→          />
+  1042→          <MissionCard
+  1043→            number="05"
+  1044→            icon={Globe}
+  1045→            title="Santé Communautaire"
+  1046→            subtitle="Développement durable"
+  1047→            description="Intégration des solutions médicinales traditionnelles dans le paysage sanitaire national, avec une approche collaborative visant à améliorer la santé des communautés locales de manière durable et accessible."
+  1048→            tags={["Santé publique", "Accessibilité", "Impact"]}
+  1049→            color="gold"
+  1050→          />
+  1051→          <MissionCard
+  1052→            number="06"
+  1053→            icon={TreePine}
+  1054→            title="Préservation des Espèces"
+  1055→            subtitle="Cueillette responsable"
+  1056→            description="Engagement strict à ne jamais prélever plus que ce que la nature peut régénérer, avec des normes de cueillette raisonnée pour assurer la pérennité des espèces végétales utilisées dans nos préparations."
+  1057→            tags={["Écologie", "Régénération", "Durabilité"]}
+  1058→            color="lime"
+  1059→          />
+  1060→        </div>
+  1061→
+  1062→        {/* Ethics quote */}
+  1063→        <motion.div
+  1064→          initial={{ opacity: 0, y: 20 }}
+  1065→          whileInView={{ opacity: 1, y: 0 }}
+  1066→          viewport={{ once: true }}
+  1067→          className="mt-16 rounded-xl border border-gold-500/15 bg-earth-700/30 p-6 text-center md:p-8"
+  1068→        >
+  1069→          <p className="mb-3 text-base italic text-gold-200/80 md:text-lg">
+  1070→            &ldquo;La plante n'est pas qu'une simple ressource biologique &mdash;
+  1071→            elle est une entité vivante porteuse d'une mémoire et d'une force.
+  1072→            Notre mission est de servir de pont entre la rigueur du laboratoire
+  1073→            et la profondeur de la tradition.&rdquo;
+  1074→          </p>
+  1075→          <p className="text-sm text-muted-foreground">
+  1076→            Charte d'Éthique des Sentinelles &middot; Centre Bemba Tagaçira
+  1077→          </p>
+  1078→        </motion.div>
+  1079→      </Section>
+  1080→
+  1081→      {/* ─────────── CHARTE D'ÉTHIQUE ─────────── */}
+  1082→      <Section id="charte">
+  1083→        <SectionHeader
+  1084→          label="Nos engagements"
+  1085→          title="Charte d'Éthique & de Qualité"
+  1086→          description="La charte qui régit l'engagement de chaque Sentinelle du Centre Bemba Tagaçira."
+  1087→        />
+  1088→
+  1089→        {/* Preamble */}
+  1090→        <motion.div
+  1091→          initial={{ opacity: 0, y: 20 }}
+  1092→          whileInView={{ opacity: 1, y: 0 }}
+  1093→          viewport={{ once: true }}
+  1094→          className="mx-auto mb-12 max-w-3xl rounded-xl border border-gold-500/15 bg-earth-700/30 p-6 text-center md:p-8"
+  1095→        >
+  1096→          <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+  1097→            En tant que membre de l'ONG Centre Bemba Tagaçira, je reconnais
+  1098→            que la plante n'est pas qu'une simple ressource biologique, mais une
+  1099→            entité vivante porteuse d'une mémoire et d'une force. Ma mission est
+  1100→            de servir de pont entre la rigueur du laboratoire et la profondeur
+  1101→            de la tradition.
+  1102→          </p>
+  1103→        </motion.div>
+  1104→
+  1105→        <div className="space-y-6">
+  1106→          <EthicsArticle
+  1107→            number="I"
+  1108→            icon={Leaf}
+  1109→            title="Le Respect du Vivant"
+  1110→            subtitle="Engagement ethnobotanique"
+  1111→            commitments={[
+  1112→              {
+  1113→                heading: "La Permission de Cueillette",
+  1114→                text: "Je m'engage à ne jamais prélever une plante sans avoir respecté les normes établies par l'ONG Centre Bemba Tagaçira, garantissant ainsi le respect de l'écosystème et des espèces.",
+  1115→              },
+  1116→              {
+  1117→                heading: "La Préservation",
+  1118→                text: "Je ne prélèverai jamais plus que ce que la nature peut régénérer, veillant à la survie de l'espèce et à l'équilibre de l'environnement.",
+  1119→              },
+  1120→            ]}
+  1121→          />
+  1122→          <EthicsArticle
+  1123→            number="II"
+  1124→            icon={Microscope}
+  1125→            title="La Rigueur du Contrôleur"
+  1126→            subtitle="Engagement scientifique"
+  1127→            commitments={[
+  1128→              {
+  1129→                heading: "L'Hygiène Irréprochable",
+  1130→                text: "Je m'engage à respecter les protocoles de propreté lors de chaque manipulation. La négligence compromet l'efficacité du remède et la sécurité des bénéficiaires.",
+  1131→              },
+  1132→              {
+  1133→                heading: "La Conformité des Processus",
+  1134→                text: "Je respecterai scrupuleusement les temps de macération, les mesures de pH et les protocoles fixés par le Centre pour garantir la qualité et la reproductibilité des préparations.",
+  1135→              },
+  1136→            ]}
+  1137→          />
+  1138→          <EthicsArticle
+  1139→            number="III"
+  1140→            icon={Lock}
+  1141→            title="Le Sceau du Secret"
+  1142→            subtitle="Engagement de confidentialité"
+  1143→            commitments={[
+  1144→              {
+  1145→                heading: "Protection du Savoir",
+  1146→                text: "Je m'engage à ne pas divulguer à des tiers les formulations spécifiques, les dosages ou les méthodes sans l'accord écrit du Bureau Exécutif.",
+  1147→              },
+  1148→              {
+  1149→                heading: "Lutte contre la Biopiraterie",
+  1150→                text: "Je m'oppose à toute exploitation commerciale des savoirs du Centre qui ne bénéficierait pas aux communautés dépositaires de ces connaissances ancestrales.",
+  1151→              },
+  1152→            ]}
+  1153→          />
+  1154→          <EthicsArticle
+  1155→            number="IV"
+  1156→            icon={Scale}
+  1157→            title="L'Intégrité de la Sentinelle"
+  1158→            subtitle="Engagement personnel"
+  1159→            commitments={[
+  1160→              {
+  1161→                heading: "Vérité et Transparence",
+  1162→                text: "Je m'interdis de falsifier les résultats d'une préparation ou d'utiliser des plantes de qualité douteuse. La transparence est le fondement de notre crédibilité.",
+  1163→              },
+  1164→              {
+  1165→                heading: "Service à la Vie",
+  1166→                text: "Mon action vise uniquement le bien-être holistique de l'individu et le renforcement des capacités de santé communautaire.",
+  1167→              },
+  1168→            ]}
+  1169→          />
+  1170→        </div>
+  1171→      </Section>
+  1172→
+  1173→      {/* ─────────── TRANSPARENCE ─────────── */}
+  1174→      <Section id="transparence" dark>
+  1175→        <SectionHeader
+  1176→          label="Transparence & Gouvernance"
+  1177→          title="Rapports d'Activités"
+  1178→          description="Dans un souci de transparence, l'ONG Centre Bemba Tagaçira s'engage à publier ses rapports d'activités et à rendre compte de l'utilisation des fonds reçus."
+  1179→        />
+  1180→
+  1181→        {/* Governance badges */}
+  1182→        <div className="mb-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
+  1183→          {[
+  1184→            {
+  1185→              icon: Eye,
+  1186→              title: "Audit Indépendant",
+  1187→              desc: "Contrôle financier annuel",
+  1188→            },
+  1189→            {
+  1190→              icon: FileText,
+  1191→              title: "Publication Publique",
+  1192→              desc: "Rapports accessibles",
+  1193→            },
+  1194→            {
+  1195→              icon: BarChart3,
+  1196→              title: "Traçabilité des Dons",
+  1197→              desc: "Fonds intégralement tracés",
+  1198→            },
+  1199→            {
+  1200→              icon: Users,
+  1201→              title: "Gouvernance Éthique",
+  1202→              desc: "Bureau exécutif élu",
+  1203→            },
+  1204→          ].map((badge) => (
+  1205→            <motion.div
+  1206→              key={badge.title}
+  1207→              initial={{ opacity: 0, y: 15 }}
+  1208→              whileInView={{ opacity: 1, y: 0 }}
+  1209→              viewport={{ once: true }}
+  1210→              transition={{ duration: 0.4 }}
+  1211→              className="rounded-lg border border-gold-500/10 bg-earth-700/30 p-4 text-center"
+  1212→            >
+  1213→              <badge.icon className="mx-auto mb-2 h-6 w-6 text-gold-400" />
+  1214→              <p className="text-sm font-semibold text-white">{badge.title}</p>
+  1215→              <p className="text-xs text-muted-foreground">{badge.desc}</p>
+  1216→            </motion.div>
+  1217→          ))}
+  1218→        </div>
+  1219→
+  1220→        {/* Reports */}
+  1221→        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  1222→          <ReportCard
+  1223→            title="Rapport Annuel 2023"
+  1224→            type="Rapport annuel"
+  1225→            year={2023}
+  1226→            pages={48}
+  1227→            code="RA-2023"
+  1228→            status="available"
+  1229→          />
+  1230→          <ReportCard
+  1231→            title="Rapport Financier 2023"
+  1232→            type="Rapport financier"
+  1233→            year={2023}
+  1234→            pages={24}
+  1235→            code="RF-2023"
+  1236→            status="available"
+  1237→          />
+  1238→          <ReportCard
+  1239→            title="Étude Scoparia dulcis"
+  1240→            type="Étude scientifique"
+  1241→            year={2023}
+  1242→            pages={72}
+  1243→            code="ES-2023"
+  1244→            status="available"
+  1245→          />
+  1246→          <ReportCard
+  1247→            title="Rapport Annuel 2022"
+  1248→            type="Rapport annuel"
+  1249→            year={2022}
+  1250→            pages={44}
+  1251→            code="RA-2022"
+  1252→            status="available"
+  1253→          />
+  1254→          <ReportCard
+  1255→            title="Rapport Financier 2022"
+  1256→            type="Rapport financier"
+  1257→            year={2022}
+  1258→            pages={20}
+  1259→            code="RF-2022"
+  1260→            status="available"
+  1261→          />
+  1262→          <ReportCard
+  1263→            title="Rapport Annuel 2024"
+  1264→            type="Rapport annuel"
+  1265→            year={2024}
+  1266→            pages={0}
+  1267→            code="RA-2024"
+  1268→            status="upcoming"
+  1269→          />
+  1270→        </div>
+  1271→
+  1272→        {/* Fund allocation */}
+  1273→        <motion.div
+  1274→          initial={{ opacity: 0, y: 20 }}
+  1275→          whileInView={{ opacity: 1, y: 0 }}
+  1276→          viewport={{ once: true }}
+  1277→          className="mt-16 rounded-xl border border-gold-500/15 bg-earth-700/30 p-6 md:p-8"
+  1278→        >
+  1279→          <h3 className="mb-6 text-center text-xl font-bold text-white">
+  1280→            Répartition des Fonds 2023
+  1281→          </h3>
+  1282→          <div className="space-y-4">
+  1283→            {[
+  1284→              {
+  1285→                label: "Recherche & Laboratoire",
+  1286→                pct: 42,
+  1287→                color: "bg-gold-500",
+  1288→              },
+  1289→              {
+  1290→                label: "Formation des Sentinelles",
+  1291→                pct: 28,
+  1292→                color: "bg-emerald-500",
+  1293→              },
+  1294→              {
+  1295→                label: "Terrain & Cueillettes",
+  1296→                pct: 20,
+  1297→                color: "bg-sky-500",
+  1298→              },
+  1299→              {
+  1300→                label: "Administration",
+  1301→                pct: 10,
+  1302→                color: "bg-earth-400",
+  1303→              },
+  1304→            ].map((item) => (
+  1305→              <div key={item.label}>
+  1306→                <div className="mb-1 flex items-center justify-between text-sm">
+  1307→                  <span className="text-muted-foreground">{item.label}</span>
+  1308→                  <span className="font-semibold text-white">{item.pct}%</span>
+  1309→                </div>
+  1310→                <div className="h-2 overflow-hidden rounded-full bg-earth-600">
+  1311→                  <motion.div
+  1312→                    initial={{ width: 0 }}
+  1313→                    whileInView={{ width: `${item.pct}%` }}
+  1314→                    viewport={{ once: true }}
+  1315→                    transition={{ duration: 1, delay: 0.2 }}
+  1316→                    className={`h-full rounded-full ${item.color}`}
+  1317→                  />
+  1318→                </div>
+  1319→              </div>
+  1320→            ))}
+  1321→          </div>
+  1322→          <p className="mt-4 text-center text-xs text-muted-foreground">
+  1323→            Données issues du rapport financier 2023.
+  1324→          </p>
+  1325→        </motion.div>
+  1326→
+  1327→        {/* Commitments */}
+  1328→        <motion.div
+  1329→          initial={{ opacity: 0, y: 20 }}
+  1330→          whileInView={{ opacity: 1, y: 0 }}
+  1331→          viewport={{ once: true }}
+  1332→          className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5"
+  1333→        >
+  1334→          {[
+  1335→            "Aucun frais administratif > 15%",
+  1336→            "Audit financier annuel",
+  1337→            "Comptes publiés dans les 3 mois",
+  1338→            "Traçabilité de chaque don",
+  1339→            "Gouvernance collégiale",
+  1340→          ].map((commitment) => (
+  1341→            <div
+  1342→              key={commitment}
+  1343→              className="flex items-start gap-2 rounded-lg border border-gold-500/10 bg-earth-700/20 p-3"
+  1344→            >
+  1345→              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+  1346→              <span className="text-xs text-muted-foreground">
+  1347→                {commitment}
+  1348→              </span>
+  1349→            </div>
+  1350→          ))}
+  1351→        </motion.div>
+  1352→      </Section>
+  1353→
+  1354→      {/* ─────────── DEVENIR SENTINELLE ─────────── */}
+  1355→      <Section id="adhesion">
+  1356→        <SectionHeader
+  1357→          label="Rejoindre le mouvement"
+  1358→          title="Devenir Sentinelle"
+  1359→          description="Rejoignez le réseau des Sentinelles de l'ONG Centre Bemba Tagaçira et engagez-vous dans la valorisation de la pharmacopée africaine."
+  1360→        />
+  1361→
+  1362→        <motion.div
+  1363→          initial={{ opacity: 0, y: 20 }}
+  1364→          whileInView={{ opacity: 1, y: 0 }}
+  1365→          viewport={{ once: true }}
+  1366→          className="mx-auto max-w-2xl"
+  1367→        >
+  1368→          <form
+  1369→            onSubmit={(e: FormEvent) => {
+  1370→              e.preventDefault();
+  1371→            }}
+  1372→            className="space-y-5 rounded-xl border border-gold-500/15 bg-earth-700/30 p-6 backdrop-blur-sm md:p-8"
+  1373→          >
+  1374→            <div className="grid gap-5 sm:grid-cols-2">
+  1375→              <div>
+  1376→                <Label htmlFor="s-nom" className="mb-2 text-sm text-muted-foreground">
+  1377→                  Nom <span className="text-gold-400">*</span>
+  1378→                </Label>
+  1379→                <Input
+  1380→                  id="s-nom"
+  1381→                  placeholder="Votre nom de famille"
+  1382→                  required
+  1383→                  className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1384→                />
+  1385→              </div>
+  1386→              <div>
+  1387→                <Label htmlFor="s-prenom" className="mb-2 text-sm text-muted-foreground">
+  1388→                  Prénom <span className="text-gold-400">*</span>
+  1389→                </Label>
+  1390→                <Input
+  1391→                  id="s-prenom"
+  1392→                  placeholder="Votre prénom"
+  1393→                  required
+  1394→                  className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1395→                />
+  1396→              </div>
+  1397→            </div>
+  1398→
+  1399→            <div className="grid gap-5 sm:grid-cols-2">
+  1400→              <div>
+  1401→                <Label htmlFor="s-email" className="mb-2 text-sm text-muted-foreground">
+  1402→                  Email <span className="text-gold-400">*</span>
+  1403→                </Label>
+  1404→                <Input
+  1405→                  id="s-email"
+  1406→                  type="email"
+  1407→                  placeholder="votre@email.com"
+  1408→                  required
+  1409→                  className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1410→                />
+  1411→              </div>
+  1412→              <div>
+  1413→                <Label htmlFor="s-tel" className="mb-2 text-sm text-muted-foreground">
+  1414→                  Téléphone
+  1415→                </Label>
+  1416→                <Input
+  1417→                  id="s-tel"
+  1418→                  type="tel"
+  1419→                  placeholder="+225 07 XX XX XX XX"
+  1420→                  className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1421→                />
+  1422→              </div>
+  1423→            </div>
+  1424→
+  1425→            <div className="grid gap-5 sm:grid-cols-2">
+  1426→              <div>
+  1427→                <Label htmlFor="s-ville" className="mb-2 text-sm text-muted-foreground">
+  1428→                  Ville <span className="text-gold-400">*</span>
+  1429→                </Label>
+  1430→                <Input
+  1431→                  id="s-ville"
+  1432→                  placeholder="Votre ville"
+  1433→                  required
+  1434→                  className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1435→                />
+  1436→              </div>
+  1437→              <div>
+  1438→                <Label htmlFor="s-pays" className="mb-2 text-sm text-muted-foreground">
+  1439→                  Pays <span className="text-gold-400">*</span>
+  1440→                </Label>
+  1441→                <Select>
+  1442→                  <SelectTrigger className="border-gold-500/15 bg-earth-800/50 text-white focus:border-gold-500/40">
+  1443→                    <SelectValue placeholder="Sélectionner" />
+  1444→                  </SelectTrigger>
+  1445→                  <SelectContent className="border-gold-500/15 bg-earth-800 text-white">
+  1446→                    {[
+  1447→                      "Côte d'Ivoire",
+  1448→                      "Sénégal",
+  1449→                      "Mali",
+  1450→                      "Guinée",
+  1451→                      "Burkina Faso",
+  1452→                      "Ghana",
+  1453→                      "Nigeria",
+  1454→                      "Cameroun",
+  1455→                      "RD Congo",
+  1456→                      "Togo",
+  1457→                      "Bénin",
+  1458→                      "France",
+  1459→                      "Belgique",
+  1460→                      "Canada",
+  1461→                      "Autre",
+  1462→                    ].map((p) => (
+  1463→                      <SelectItem key={p} value={p}>
+  1464→                        {p}
+  1465→                      </SelectItem>
+  1466→                    ))}
+  1467→                  </SelectContent>
+  1468→                </Select>
+  1469→              </div>
+  1470→            </div>
+  1471→
+  1472→            <div>
+  1473→              <Label htmlFor="s-motivation" className="mb-2 text-sm text-muted-foreground">
+  1474→                Motivation & Parcours <span className="text-gold-400">*</span>
+  1475→              </Label>
+  1476→              <Textarea
+  1477→                id="s-motivation"
+  1478→                placeholder="Décrivez votre motivation et votre parcours (minimum 30 caractères)"
+  1479→                required
+  1480→                rows={4}
+  1481→                minLength={30}
+  1482→                className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1483→              />
+  1484→            </div>
+  1485→
+  1486→            <div className="flex items-start gap-3">
+  1487→              <Checkbox
+  1488→                id="s-charte"
+  1489→                required
+  1490→                className="mt-1 border-gold-500/30 data-[state=checked]:bg-gold-500 data-[state=checked]:text-earth-900"
+  1491→              />
+  1492→              <Label
+  1493→                htmlFor="s-charte"
+  1494→                className="text-xs leading-relaxed text-muted-foreground"
+  1495→              >
+  1496→                J'accepte les termes de la{" "}
+  1497→                <a
+  1498→                  href="#charte"
+  1499→                  className="text-gold-400 underline hover:text-gold-300"
+  1500→                >
+  1501→                  Charte d'Éthique et de Qualité
+  1502→                </a>{" "}
+  1503→                et m'engage, par mon honneur et ma conscience, à agir en
+  1504→                Sentinelle dévouée de l'ONG Centre Bemba Tagaçira.{" "}
+  1505→                <span className="text-gold-400">*</span>
+  1506→              </Label>
+  1507→            </div>
+  1508→
+  1509→            <Button
+  1510→              type="submit"
+  1511→              size="lg"
+  1512→              className="w-full bg-gold-500 text-earth-900 hover:bg-gold-400"
+  1513→            >
+  1514→              <UserPlus className="mr-2 h-4 w-4" />
+  1515→              Soumettre ma candidature
+  1516→            </Button>
+  1517→
+  1518→            <p className="text-center text-xs text-muted-foreground">
+  1519→              Champs obligatoires. Vos données sont traitées dans le strict
+  1520→              respect de la vie privée.
+  1521→            </p>
+  1522→          </form>
+  1523→        </motion.div>
+  1524→      </Section>
+  1525→
+  1526→      {/* ─────────── CONTACT ─────────── */}
+  1527→      <Section id="contact" dark>
+  1528→        <SectionHeader
+  1529→          label="Nous écrire"
+  1530→          title="Prendre Contact"
+  1531→          description="Une question, un projet de collaboration, une demande d'information ? Notre équipe vous répond sous 48h ouvrables."
+  1532→        />
+  1533→
+  1534→        <div className="grid gap-8 lg:grid-cols-2">
+  1535→          {/* Contact info */}
+  1536→          <div className="space-y-6">
+  1537→            {[
+  1538→              {
+  1539→                icon: MapPin,
+  1540→                title: "Siège Social",
+  1541→                lines: ["Abidjan, Côte d'Ivoire", "ONG de droit ivoirien"],
+  1542→              },
+  1543→              {
+  1544→                icon: Users,
+  1545→                title: "Président Fondateur",
+  1546→                lines: [
+  1547→                  "Tounkara Al Foussein",
+  1548→                  "Expert chimie alimentaire & Ethnobotaniste",
+  1549→                ],
+  1550→              },
+  1551→              {
+  1552→                icon: Clock,
+  1553→                title: "Délai de Réponse",
+  1554→                lines: ["Sous 48h ouvrables", "Du lundi au vendredi"],
+  1555→              },
+  1556→              {
+  1557→                icon: Globe,
+  1558→                title: "Collaboration",
+  1559→                lines: [
+  1560→                  "Institutions, chercheurs, ONG",
+  1561→                  "Partenariats ouverts",
+  1562→                ],
+  1563→              },
+  1564→            ].map((item) => (
+  1565→              <div
+  1566→                key={item.title}
+  1567→                className="flex items-start gap-4 rounded-lg border border-gold-500/10 bg-earth-700/30 p-4"
+  1568→              >
+  1569→                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gold-500/10">
+  1570→                  <item.icon className="h-5 w-5 text-gold-400" />
+  1571→                </div>
+  1572→                <div>
+  1573→                  <h4 className="text-sm font-semibold text-white">
+  1574→                    {item.title}
+  1575→                  </h4>
+  1576→                  {item.lines.map((line) => (
+  1577→                    <p key={line} className="text-sm text-muted-foreground">
+  1578→                      {line}
+  1579→                    </p>
+  1580→                  ))}
+  1581→                </div>
+  1582→              </div>
+  1583→            ))}
+  1584→
+  1585→            <div className="flex flex-wrap gap-3">
+  1586→              <a href="#adhesion">
+  1587→                <Button
+  1588→                  variant="outline"
+  1589→                  size="sm"
+  1590→                  className="border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
+  1591→                >
+  1592→                  <HandHeart className="mr-2 h-4 w-4" />
+  1593→                  Devenir Sentinelle
+  1594→                </Button>
+  1595→              </a>
+  1596→            </div>
+  1597→
+  1598→            <blockquote className="rounded-lg border-l-4 border-emerald-500/30 bg-earth-700/20 p-4">
+  1599→              <p className="text-sm italic text-muted-foreground">
+  1600→                &ldquo;Nous sommes ouverts à toute collaboration visant à
+  1601→                intégrer ces solutions dans le paysage sanitaire national.&rdquo;
+  1602→              </p>
+  1603→              <footer className="mt-2 text-xs text-muted-foreground">
+  1604→                ONG Centre Bemba Tagaçira
+  1605→              </footer>
+  1606→            </blockquote>
+  1607→          </div>
+  1608→
+  1609→          {/* Contact form */}
+  1610→          <form
+  1611→            onSubmit={(e: FormEvent) => {
+  1612→              e.preventDefault();
+  1613→            }}
+  1614→            className="space-y-5 rounded-xl border border-gold-500/15 bg-earth-700/30 p-6 backdrop-blur-sm md:p-8"
+  1615→          >
+  1616→            <div className="grid gap-5 sm:grid-cols-2">
+  1617→              <div>
+  1618→                <Label htmlFor="c-nom" className="mb-2 text-sm text-muted-foreground">
+  1619→                  Nom complet <span className="text-gold-400">*</span>
+  1620→                </Label>
+  1621→                <Input
+  1622→                  id="c-nom"
+  1623→                  placeholder="Votre nom complet"
+  1624→                  required
+  1625→                  className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1626→                />
+  1627→              </div>
+  1628→              <div>
+  1629→                <Label htmlFor="c-email" className="mb-2 text-sm text-muted-foreground">
+  1630→                  Email <span className="text-gold-400">*</span>
+  1631→                </Label>
+  1632→                <Input
+  1633→                  id="c-email"
+  1634→                  type="email"
+  1635→                  placeholder="votre@email.com"
+  1636→                  required
+  1637→                  className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1638→                />
+  1639→              </div>
+  1640→            </div>
+  1641→
+  1642→            <div className="grid gap-5 sm:grid-cols-2">
+  1643→              <div>
+  1644→                <Label htmlFor="c-tel" className="mb-2 text-sm text-muted-foreground">
+  1645→                  Téléphone
+  1646→                </Label>
+  1647→                <Input
+  1648→                  id="c-tel"
+  1649→                  type="tel"
+  1650→                  placeholder="+225 07 XX XX XX XX"
+  1651→                  className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1652→                />
+  1653→              </div>
+  1654→              <div>
+  1655→                <Label htmlFor="c-org" className="mb-2 text-sm text-muted-foreground">
+  1656→                  Organisation
+  1657→                </Label>
+  1658→                <Input
+  1659→                  id="c-org"
+  1660→                  placeholder="Votre organisation"
+  1661→                  className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1662→                />
+  1663→              </div>
+  1664→            </div>
+  1665→
+  1666→            <div>
+  1667→              <Label htmlFor="c-objet" className="mb-2 text-sm text-muted-foreground">
+  1668→                Objet <span className="text-gold-400">*</span>
+  1669→              </Label>
+  1670→              <Select>
+  1671→                <SelectTrigger className="border-gold-500/15 bg-earth-800/50 text-white focus:border-gold-500/40">
+  1672→                  <SelectValue placeholder="Sélectionner l'objet" />
+  1673→                </SelectTrigger>
+  1674→                <SelectContent className="border-gold-500/15 bg-earth-800 text-white">
+  1675→                  {[
+  1676→                    "Demande d'information générale",
+  1677→                    "Collaboration institutionnelle",
+  1678→                    "Soutien financier",
+  1679→                    "Bénévolat & Adhésion Sentinelle",
+  1680→                    "Présentation technique",
+  1681→                    "Presse & Communication",
+  1682→                    "Autre",
+  1683→                  ].map((o) => (
+  1684→                    <SelectItem key={o} value={o}>
+  1685→                      {o}
+  1686→                    </SelectItem>
+  1687→                  ))}
+  1688→                </SelectContent>
+  1689→              </Select>
+  1690→            </div>
+  1691→
+  1692→            <div>
+  1693→              <Label htmlFor="c-msg" className="mb-2 text-sm text-muted-foreground">
+  1694→                Message <span className="text-gold-400">*</span>
+  1695→              </Label>
+  1696→              <Textarea
+  1697→                id="c-msg"
+  1698→                placeholder="Votre message"
+  1699→                required
+  1700→                rows={5}
+  1701→                className="border-gold-500/15 bg-earth-800/50 text-white placeholder:text-muted-foreground/50 focus:border-gold-500/40"
+  1702→              />
+  1703→            </div>
+  1704→
+  1705→            <div className="flex items-start gap-3">
+  1706→              <Checkbox
+  1707→                id="c-consent"
+  1708→                required
+  1709→                className="mt-1 border-gold-500/30 data-[state=checked]:bg-gold-500 data-[state=checked]:text-earth-900"
+  1710→              />
+  1711→              <Label
+  1712→                htmlFor="c-consent"
+  1713→                className="text-xs leading-relaxed text-muted-foreground"
+  1714→              >
+  1715→                J'accepte que mes données soient utilisées pour traiter ma
+  1716→                demande conformément à la politique de confidentialité de l'ONG
+  1717→                Centre Bemba Tagaçira. <span className="text-gold-400">*</span>
+  1718→              </Label>
+  1719→            </div>
+  1720→
+  1721→            <Button
+  1722→              type="submit"
+  1723→              size="lg"
+  1724→              className="w-full bg-emerald-600 text-white hover:bg-emerald-500"
+  1725→            >
+  1726→              <Send className="mr-2 h-4 w-4" />
+  1727→              Envoyer le message
+  1728→            </Button>
+  1729→
+  1730→            <p className="text-center text-xs text-muted-foreground">
+  1731→              Réponse sous 48h ouvrables &middot; Champs obligatoires
+  1732→            </p>
+  1733→          </form>
+  1734→        </div>
+  1735→      </Section>
+  1736→
+  1737→      {/* ─────────── FOOTER ─────────── */}
+  1738→      <footer className="border-t border-gold-500/10 bg-earth-900 py-12">
+  1739→        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+  1740→          {/* CTA bar */}
+  1741→          <div className="mb-12 rounded-xl border border-gold-500/15 bg-earth-700/20 p-6 text-center md:p-8">
+  1742→            <h3 className="mb-2 text-2xl font-bold text-white">
+  1743→              Rejoignez la Mission
+  1744→            </h3>
+  1745→            <p className="mb-6 text-muted-foreground">
+  1746→              Soutenez la valorisation de la pharmacopée africaine.
+  1747→            </p>
+  1748→            <div className="flex flex-wrap items-center justify-center gap-4">
+  1749→              <a href="#contact">
+  1750→                <Button className="bg-emerald-600 text-white hover:bg-emerald-500">
+  1751→                  <Heart className="mr-2 h-4 w-4" />
+  1752→                  Soutenir l'ONG
+  1753→                </Button>
+  1754→              </a>
+  1755→              <a href="#adhesion">
+  1756→                <Button
+  1757→                  variant="outline"
+  1758→                  className="border-gold-500/30 text-gold-300 hover:bg-gold-500/10"
+  1759→                >
+  1760→                  <HandHeart className="mr-2 h-4 w-4" />
+  1761→                  Devenir Sentinelle
+  1762→                </Button>
+  1763→              </a>
+  1764→              <a href="#contact">
+  1765→                <Button
+  1766→                  variant="ghost"
+  1767→                  className="text-muted-foreground hover:text-white"
+  1768→                >
+  1769→                  <Mail className="mr-2 h-4 w-4" />
+  1770→                  Nous Contacter
+  1771→                </Button>
+  1772→              </a>
+  1773→            </div>
+  1774→          </div>
+  1775→
+  1776→          {/* Footer grid */}
+  1777→          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+  1778→            {/* About */}
+  1779→            <div className="sm:col-span-2 lg:col-span-1">
+  1780→              <div className="mb-4 flex items-center gap-3">
+  1781→                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold-500/10">
+  1782→                  <Leaf className="h-4 w-4 text-gold-400" />
+  1783→                </div>
+  1784→                <span className="text-sm font-bold text-white">
+  1785→                  Centre Bemba Tagaçira
+  1786→                </span>
+  1787→              </div>
+  1788→              <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+  1789→                ONG de droit ivoirien dédiée à la valorisation de la pharmacopée
+  1790→                africaine par la rigueur scientifique et la transmission des
+  1791→                savoirs ancestraux.
+  1792→              </p>
+  1793→              <p className="text-xs italic text-gold-400/60">
+  1794→                La science au service de la tradition, la tradition pour la
+  1795→                protection de la vie.
+  1796→              </p>
+  1797→            </div>
+  1798→
+  1799→            {/* Navigation */}
+  1800→            <div>
+  1801→              <h4 className="mb-4 text-sm font-semibold text-white">
+  1802→                Navigation
+  1803→              </h4>
+  1804→              <nav className="space-y-2">
+  1805→                {navLinks.map((link) => (
+  1806→                  <a
+  1807→                    key={link.href}
+  1808→                    href={link.href}
+  1809→                    className="block text-sm text-muted-foreground transition-colors hover:text-gold-400"
+  1810→                  >
+  1811→                    {link.label}
+  1812→                  </a>
+  1813→                ))}
+  1814→              </nav>
+  1815→            </div>
+  1816→
+  1817→            {/* Actions */}
+  1818→            <div>
+  1819→              <h4 className="mb-4 text-sm font-semibold text-white">S'engager</h4>
+  1820→              <nav className="space-y-2">
+  1821→                <a
+  1822→                  href="#adhesion"
+  1823→                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-gold-400"
+  1824→                >
+  1825→                  <UserPlus className="h-4 w-4" />
+  1826→                  Devenir Sentinelle
+  1827→                </a>
+  1828→                <a
+  1829→                  href="#contact"
+  1830→                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-gold-400"
+  1831→                >
+  1832→                  <Heart className="h-4 w-4" />
+  1833→                  Soutenir l'ONG
+  1834→                </a>
+  1835→                <a
+  1836→                  href="#transparence"
+  1837→                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-gold-400"
+  1838→                >
+  1839→                  <FileText className="h-4 w-4" />
+  1840→                  Rapports d'activités
+  1841→                </a>
+  1842→                <a
+  1843→                  href="#charte"
+  1844→                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-gold-400"
+  1845→                >
+  1846→                  <Scale className="h-4 w-4" />
+  1847→                  Charte d'Éthique
+  1848→                </a>
+  1849→              </nav>
+  1850→            </div>
+  1851→
+  1852→            {/* Contact */}
+  1853→            <div>
+  1854→              <h4 className="mb-4 text-sm font-semibold text-white">
+  1855→                Contact
+  1856→              </h4>
+  1857→              <div className="space-y-3">
+  1858→                <div className="flex items-start gap-2">
+  1859→                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+  1860→                  <span className="text-sm text-muted-foreground">
+  1861→                    Abidjan, Côte d'Ivoire
+  1862→                  </span>
+  1863→                </div>
+  1864→                <div className="flex items-start gap-2">
+  1865→                  <Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+  1866→                  <span className="text-sm text-muted-foreground">
+  1867→                    Réponse sous 48h ouvrables
+  1868→                  </span>
+  1869→                </div>
+  1870→              </div>
+  1871→            </div>
+  1872→          </div>
+  1873→
+  1874→          {/* Bottom bar */}
+  1875→          <div className="mt-12 border-t border-gold-500/10 pt-8">
+  1876→            <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+  1877→              <p className="text-xs text-muted-foreground">
+  1878→                © {new Date().getFullYear()} ONG Centre Bemba Tagaçira &mdash;
+  1879→                Tous droits réservés. Abidjan, Côte d'Ivoire.
+  1880→              </p>
+  1881→              <p className="text-xs text-muted-foreground">
+  1882→                Pharmacopée Africaine &middot; Recherche & Développement
+  1883→                &middot; Ethnobotanique
+  1884→              </p>
+  1885→            </div>
+  1886→          </div>
+  1887→        </div>
+  1888→      </footer>
+  1889→
+  1890→      {/* ─────────── BACK TO TOP ─────────── */}
+  1891→      <AnimatePresence>
+  1892→        {showBackToTop && (
+  1893→          <motion.button
+  1894→            initial={{ opacity: 0, scale: 0.8 }}
+  1895→            animate={{ opacity: 1, scale: 1 }}
+  1896→            exit={{ opacity: 0, scale: 0.8 }}
+  1897→            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  1898→            className="fixed right-6 bottom-6 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-gold-500/30 bg-earth-800/90 text-gold-400 shadow-lg backdrop-blur-sm transition-colors hover:bg-earth-700"
+  1899→            aria-label="Retour en haut"
+  1900→          >
+  1901→            <ArrowUp className="h-5 w-5" />
+  1902→          </motion.button>
+  1903→        )}
+  1904→      </AnimatePresence>
+  1905→    </div>
+  1906→  );
+  1907→}
+  1908→
